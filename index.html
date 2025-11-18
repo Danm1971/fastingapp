@@ -89,7 +89,6 @@ border-radius: 50%;
 background: var(--accent);
 }
 
-/* Cards */
 .card {
 background: radial-gradient(circle at top, #1b2440 0, #090f20 70%);
 border-radius: var(--radius-card);
@@ -161,7 +160,6 @@ border: 1px solid rgba(255,255,255,0.1);
 color: var(--text-dim);
 }
 
-/* Profile section */
 .profile-grid {
 display: grid;
 grid-template-columns: minmax(0,1fr);
@@ -219,7 +217,6 @@ padding: 2px 8px;
 font-size: 11px;
 }
 
-/* Fasting overview layout */
 .overview-layout {
 display: grid;
 grid-template-columns: minmax(0,1.1fr) minmax(0,1fr);
@@ -315,7 +312,6 @@ color: var(--text-dim);
 margin-top: 6px;
 }
 
-/* Speedometer */
 .speedometer-card {
 background: radial-gradient(circle at top,#1a213b 0,#070b16 70%);
 border-radius: var(--radius-inner);
@@ -414,7 +410,6 @@ text-align: center;
 margin-top: 4px;
 }
 
-/* Autofagi card */
 .autophagy-card {
 margin-top: 10px;
 background: radial-gradient(circle at left,#1f2937 0,#020617 70%);
@@ -482,7 +477,6 @@ color: var(--green);
 border-color: rgba(74,222,128,0.6);
 }
 
-/* Energy chips */
 .energy-row {
 margin-top: 10px;
 display: grid;
@@ -511,7 +505,6 @@ font-size: 12px;
 font-variant-numeric: tabular-nums;
 }
 
-/* Controls & activity */
 .controls-row {
 margin-top: 10px;
 display: flex;
@@ -615,7 +608,6 @@ font-size: 11px;
 color: var(--text-dim);
 }
 
-/* Small status text */
 .status-row {
 display: flex;
 justify-content: space-between;
@@ -886,14 +878,13 @@ Grov model – ikke medicinsk rådgivning
 </div>
 
 <script>
-// ======= KONSTANTER =======
-const STORAGE_KEY = "fastingApp_v25";
-const AUTOPHAGY_HOURS = 16;
-const OPTIMAL_HOURS = 24;
-const MAX_HOURS = 40; // hvor effekten begynder at aftage
+(function () {
+var STORAGE_KEY = "fastingApp_v25b";
+var AUTOPHAGY_HOURS = 16;
+var OPTIMAL_HOURS = 24;
+var MAX_HOURS = 40;
 
-// ======= STATE =======
-const defaultState = {
+var defaultState = {
 profile: {
 ageGroup: "50-59",
 sex: "male",
@@ -901,68 +892,72 @@ weight: 85,
 muscleLevel: "normal"
 },
 dailyCalories: 2000,
-elapsedRealMs: 0, // akkumuleret (pause/stop)
-runningSince: null, // timestamp (ms) når kørende
+elapsedRealMs: 0,
+runningSince: null,
 totalActivityCalories: 0,
 totalRefeedCalories: 0
 };
 
-let state = { ...defaultState };
+var state = JSON.parse(JSON.stringify(defaultState));
 
-// ======= ELEMENTER =======
-const ageGroupEl = document.getElementById("ageGroup");
-const sexEl = document.getElementById("sex");
-const weightEl = document.getElementById("weight");
-const muscleLevelEl = document.getElementById("muscleLevel");
-const dailyCaloriesEl = document.getElementById("dailyCalories");
+var ageGroupEl = document.getElementById("ageGroup");
+var sexEl = document.getElementById("sex");
+var weightEl = document.getElementById("weight");
+var muscleLevelEl = document.getElementById("muscleLevel");
+var dailyCaloriesEl = document.getElementById("dailyCalories");
 
-const realTimerEl = document.getElementById("realTimer");
-const effectiveTimerEl = document.getElementById("effectiveTimer");
-const weightLossGramsEl = document.getElementById("weightLossGrams");
-const hoursSummaryEl = document.getElementById("hoursSummary");
-const levelBadgeEl = document.getElementById("levelBadge");
-const stateLabelEl = document.getElementById("stateLabel");
+var realTimerEl = document.getElementById("realTimer");
+var effectiveTimerEl = document.getElementById("effectiveTimer");
+var weightLossGramsEl = document.getElementById("weightLossGrams");
+var hoursSummaryEl = document.getElementById("hoursSummary");
+var levelBadgeEl = document.getElementById("levelBadge");
+var stateLabelEl = document.getElementById("stateLabel");
 
-const speedNeedleEl = document.getElementById("speedNeedle");
-const speedTextEl = document.getElementById("speedText");
-const boostLabelEl = document.getElementById("boostLabel");
+var speedNeedleEl = document.getElementById("speedNeedle");
+var speedTextEl = document.getElementById("speedText");
+var boostLabelEl = document.getElementById("boostLabel");
 
-const autophagyCardEl = document.getElementById("autophagyCard");
-const autophagyBadgeEl = document.getElementById("autophagyBadge");
-const autophagyMainEl = document.getElementById("autophagyMain");
+var autophagyBadgeEl = document.getElementById("autophagyBadge");
+var autophagyMainEl = document.getElementById("autophagyMain");
 
-const carbPctEl = document.getElementById("carbPct");
-const fatPctEl = document.getElementById("fatPct");
-const musclePctEl = document.getElementById("musclePct");
-const bonePctEl = document.getElementById("bonePct");
+var carbPctEl = document.getElementById("carbPct");
+var fatPctEl = document.getElementById("fatPct");
+var musclePctEl = document.getElementById("musclePct");
+var bonePctEl = document.getElementById("bonePct");
 
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const resetBtn = document.getElementById("resetBtn");
-const initialHoursEl = document.getElementById("initialHours");
+var startBtn = document.getElementById("startBtn");
+var pauseBtn = document.getElementById("pauseBtn");
+var resetBtn = document.getElementById("resetBtn");
+var initialHoursEl = document.getElementById("initialHours");
 
-const activityCaloriesEl = document.getElementById("activityCalories");
-const refeedCaloriesEl = document.getElementById("refeedCalories");
-const addActivityBtn = document.getElementById("addActivityBtn");
-const addRefeedBtn = document.getElementById("addRefeedBtn");
-const activitySummaryEl = document.getElementById("activitySummary");
-const refeedSummaryEl = document.getElementById("refeedSummary");
+var activityCaloriesEl = document.getElementById("activityCalories");
+var refeedCaloriesEl = document.getElementById("refeedCalories");
+var addActivityBtn = document.getElementById("addActivityBtn");
+var addRefeedBtn = document.getElementById("addRefeedBtn");
+var activitySummaryEl = document.getElementById("activitySummary");
+var refeedSummaryEl = document.getElementById("refeedSummary");
 
-const resetProfileBtn = document.getElementById("resetProfileBtn");
-const infoToggleBtn = document.getElementById("infoToggle");
-const infoBoxEl = document.getElementById("infoBox");
+var resetProfileBtn = document.getElementById("resetProfileBtn");
+var infoToggleBtn = document.getElementById("infoToggle");
+var infoBoxEl = document.getElementById("infoBox");
 
-// ======= HJÆLPEFUNKTIONER =======
 function loadState() {
 try {
-const raw = localStorage.getItem(STORAGE_KEY);
+var raw = localStorage.getItem(STORAGE_KEY);
 if (!raw) return;
-const parsed = JSON.parse(raw);
-state = {
-...defaultState,
-...parsed,
-profile: { ...defaultState.profile, ...parsed.profile }
-};
+var parsed = JSON.parse(raw);
+state = JSON.parse(JSON.stringify(defaultState));
+if (parsed.profile) {
+state.profile.ageGroup = parsed.profile.ageGroup || state.profile.ageGroup;
+state.profile.sex = parsed.profile.sex || state.profile.sex;
+state.profile.weight = parsed.profile.weight || state.profile.weight;
+state.profile.muscleLevel = parsed.profile.muscleLevel || state.profile.muscleLevel;
+}
+if (typeof parsed.dailyCalories === "number") state.dailyCalories = parsed.dailyCalories;
+if (typeof parsed.elapsedRealMs === "number") state.elapsedRealMs = parsed.elapsedRealMs;
+if (typeof parsed.runningSince === "number") state.runningSince = parsed.runningSince;
+if (typeof parsed.totalActivityCalories === "number") state.totalActivityCalories = parsed.totalActivityCalories;
+if (typeof parsed.totalRefeedCalories === "number") state.totalRefeedCalories = parsed.totalRefeedCalories;
 } catch (e) {
 console.warn("Kunne ikke loade state:", e);
 }
@@ -977,14 +972,16 @@ console.warn("Kunne ikke gemme state:", e);
 }
 
 function computeDailyCalories(profile) {
-const { ageGroup, sex, weight, muscleLevel } = profile;
-let base;
+var ageGroup = profile.ageGroup;
+var sex = profile.sex;
+var weight = profile.weight;
+var muscleLevel = profile.muscleLevel;
+var base;
 
 if (sex === "female") base = 20 * weight + 400;
 else if (sex === "male") base = 22 * weight + 500;
 else base = 21 * weight + 450;
 
-// alder
 if (ageGroup === "18-29") base *= 1.05;
 else if (ageGroup === "30-39") base *= 1.02;
 else if (ageGroup === "40-49") base *= 1.0;
@@ -992,7 +989,6 @@ else if (ageGroup === "50-59") base *= 0.96;
 else if (ageGroup === "60-69") base *= 0.92;
 else base *= 0.88;
 
-// muskelmasse
 if (muscleLevel === "low") base *= 0.93;
 else if (muscleLevel === "muscular") base *= 1.12;
 
@@ -1001,12 +997,14 @@ return Math.round(base);
 
 function formatTime(totalMs) {
 if (totalMs < 0) totalMs = 0;
-const totalSec = Math.floor(totalMs / 1000);
-const h = Math.floor(totalSec / 3600);
-const m = Math.floor((totalSec % 3600) / 60);
-const s = totalSec % 60;
-const pad = (n) => String(n).padStart(2, "0");
-return `${pad(h)}:${pad(m)}:${pad(s)}`;
+var totalSec = Math.floor(totalMs / 1000);
+var h = Math.floor(totalSec / 3600);
+var m = Math.floor((totalSec % 3600) / 60);
+var s = totalSec % 60;
+function pad(n) {
+return (n < 10 ? "0" : "") + n;
+}
+return pad(h) + ":" + pad(m) + ":" + pad(s);
 }
 
 function formatHours(h) {
@@ -1014,28 +1012,29 @@ return h.toFixed(1).replace(".", ",");
 }
 
 function clamp(v, min, max) {
-return Math.max(min, Math.min(max, v));
+if (v < min) return min;
+if (v > max) return max;
+return v;
 }
 
-// Energifordeling (meget simpel model)
 function energyFractions(effHours) {
-let carb = 0, fat = 0, muscle = 0, bone = 0;
+var carb = 0, fat = 0, muscle = 0, bone = 0;
 
 if (effHours < 4) {
 carb = 0.9; fat = 0.1;
 } else if (effHours < 12) {
-const t = (effHours - 4) / 8; // 0..1
-carb = 0.9 - 0.4 * t; // 90 -> 50
-fat = 0.1 + 0.4 * t; // 10 -> 50
+var t1 = (effHours - 4) / 8;
+carb = 0.9 - 0.4 * t1;
+fat = 0.1 + 0.4 * t1;
 } else if (effHours < 24) {
-const t = (effHours - 12) / 12;
-carb = 0.5 - 0.35 * t; // 50 -> 15
-fat = 0.5 + 0.25 * t; // 50 -> 75
+var t2 = (effHours - 12) / 12;
+carb = 0.5 - 0.35 * t2;
+fat = 0.5 + 0.25 * t2;
 } else if (effHours < 36) {
-const t = (effHours - 24) / 12;
-carb = 0.15 - 0.1 * t; // 15 -> 5
-fat = 0.75 - 0.05 * t; // 75 -> 70
-muscle = 0 + 0.15 * t; // 0 -> 15
+var t3 = (effHours - 24) / 12;
+carb = 0.15 - 0.1 * t3;
+fat = 0.75 - 0.05 * t3;
+muscle = 0 + 0.15 * t3;
 } else {
 carb = 0.05;
 fat = 0.6;
@@ -1043,7 +1042,8 @@ muscle = 0.25;
 bone = 0.10;
 }
 
-const total = carb + fat + muscle + bone || 1;
+var total = carb + fat + muscle + bone;
+if (!total) total = 1;
 return {
 carb: carb / total,
 fat: fat / total,
@@ -1052,41 +1052,62 @@ bone: bone / total
 };
 }
 
+function syncProfileUI() {
+var p = state.profile;
+ageGroupEl.value = p.ageGroup;
+sexEl.value = p.sex;
+weightEl.value = p.weight;
+muscleLevelEl.value = p.muscleLevel;
+dailyCaloriesEl.textContent = state.dailyCalories;
+}
+
+function updateProfileFromUI() {
+var profile = {
+ageGroup: ageGroupEl.value,
+sex: sexEl.value,
+weight: Number(weightEl.value) || 80,
+muscleLevel: muscleLevelEl.value
+};
+var daily = computeDailyCalories(profile);
+state.profile = profile;
+state.dailyCalories = daily;
+dailyCaloriesEl.textContent = daily;
+saveState();
+updateUI();
+}
+
 function updateUI() {
-// beregn real tid
-const now = Date.now();
-let realMs = state.elapsedRealMs;
+var now = Date.now();
+var realMs = state.elapsedRealMs;
 if (state.runningSince) {
 realMs += now - state.runningSince;
 }
 
-const realHours = realMs / 3_600_000;
+var realHours = realMs / 3600000;
 
-// beregn effektive timer
-const daily = state.dailyCalories || 2000;
-const baseRate = daily / 24; // kcal/time
+var daily = state.dailyCalories || 2000;
+var baseRate = daily / 24;
 
-const activityHours = state.totalActivityCalories / baseRate;
-const refeedPenaltyHours = (state.totalRefeedCalories / baseRate) * 2;
+var activityHours = state.totalActivityCalories / baseRate;
+var refeedPenaltyHours = (state.totalRefeedCalories / baseRate) * 2;
 
-const effHours = Math.max(0, realHours + activityHours - refeedPenaltyHours);
-const effMs = effHours * 3_600_000;
+var effHours = realHours + activityHours - refeedPenaltyHours;
+if (effHours < 0) effHours = 0;
+var effMs = effHours * 3600000;
 
-// vægttab (fra faste + aktivitet)
-const kcalDeficit = effHours * baseRate;
-const gramsLost = kcalDeficit / 7.7; // 7700 kcal ~ 1 kg
+var kcalDeficit = effHours * baseRate;
+var gramsLost = kcalDeficit / 7.7;
 
-// opdater tekst
 realTimerEl.textContent = formatTime(realMs);
 effectiveTimerEl.textContent = formatTime(effMs);
 weightLossGramsEl.textContent = Math.max(0, Math.round(gramsLost));
 
 hoursSummaryEl.textContent =
-`${formatHours(effHours)} timer effektiv / ${formatHours(realHours)} timer reel`;
+formatHours(effHours) + " timer effektiv / " +
+formatHours(realHours) + " timer reel";
 
-// niveau / medalje (meget simpel)
-let level = "Ingen medalje";
-let badgeClass = "status-pill";
+var level = "Ingen medalje";
+var badgeClass = "status-pill";
 if (effHours >= 24 && effHours < 36) {
 level = "🟢 Guld – optimal faste";
 badgeClass = "status-pill good";
@@ -1103,7 +1124,6 @@ badgeClass = "status-pill warn";
 levelBadgeEl.className = badgeClass;
 levelBadgeEl.textContent = level;
 
-// state label
 if (!state.runningSince && realMs === 0) {
 stateLabelEl.textContent = "Klar til start";
 } else if (effHours < AUTOPHAGY_HOURS) {
@@ -1116,34 +1136,31 @@ stateLabelEl.textContent = "Aftagende effekt";
 stateLabelEl.textContent = "Meget lang faste – vær forsigtig";
 }
 
-// speedometer: 0..1 stigende til OPTIMAL, derefter aftagende til MAX
-let intensity;
+var intensity;
 if (effHours <= OPTIMAL_HOURS) {
-intensity = effHours / OPTIMAL_HOURS; // 0..1
+intensity = effHours / OPTIMAL_HOURS;
 } else if (effHours >= MAX_HOURS) {
 intensity = 0;
 } else {
-const t = (effHours - OPTIMAL_HOURS) / (MAX_HOURS - OPTIMAL_HOURS);
-intensity = 1 - t; // falder fra 1 -> 0
+var t = (effHours - OPTIMAL_HOURS) / (MAX_HOURS - OPTIMAL_HOURS);
+intensity = 1 - t;
 }
 intensity = clamp(intensity, 0, 1);
 
-// vinkel 180° (lav) til 360° (max)
-const angle = 180 + intensity * 180;
-speedNeedleEl.style.transform = `rotate(${angle}deg)`;
+var angle = 180 + intensity * 180;
+speedNeedleEl.style.transform = "rotate(" + angle + "deg)";
 
-let speedText = "Lav hastighed";
+var speedText = "Lav hastighed";
 if (intensity < 0.35) speedText = "Lav hastighed";
 else if (intensity < 0.75) speedText = "Middel hastighed";
 else speedText = "Max-zone";
 speedTextEl.textContent = speedText;
 
-const boost = 1 + intensity * 4; // 1x -> 5x
+var boost = 1 + intensity * 4;
 boostLabelEl.textContent =
-`Booster: ${boost.toFixed(1).replace(".", ",")}× hurtigere end “normalt”`;
+"Booster: " + boost.toFixed(1).replace(".", ",") + "× hurtigere end “normalt”";
 
-// autofagi countdown
-const remainingAutophagy = AUTOPHAGY_HOURS - effHours;
+var remainingAutophagy = AUTOPHAGY_HOURS - effHours;
 if (remainingAutophagy <= 0) {
 autophagyBadgeEl.textContent = "I autofagi";
 autophagyBadgeEl.classList.add("autophagy-ok");
@@ -1151,62 +1168,37 @@ autophagyMainEl.textContent = "Kroppen rydder op i cellerne nu (model)";
 } else {
 autophagyBadgeEl.textContent = "Autofagi om";
 autophagyBadgeEl.classList.remove("autophagy-ok");
-const h = Math.floor(remainingAutophagy);
-const m = Math.round((remainingAutophagy - h) * 60);
-const hh = h.toString();
-const mm = m.toString().padStart(2, "0");
-autophagyMainEl.textContent = `${hh} t ${mm} min`;
+var h = Math.floor(remainingAutophagy);
+var m = Math.round((remainingAutophagy - h) * 60);
+var hh = String(h);
+var mm = (m < 10 ? "0" : "") + m;
+autophagyMainEl.textContent = hh + " t " + mm + " min";
 }
 
-// energikilder
-const fractions = energyFractions(effHours);
-const toPct = (x) => `${Math.round(x * 100)}%`;
+var fractions = energyFractions(effHours);
+var toPct = function (x) { return Math.round(x * 100) + "%"; };
 carbPctEl.textContent = toPct(fractions.carb);
 fatPctEl.textContent = toPct(fractions.fat);
 musclePctEl.textContent = toPct(fractions.muscle);
 bonePctEl.textContent = toPct(fractions.bone);
 
-// Aktivitet / refeed tekst
-const activityHours = state.totalActivityCalories / baseRate;
-const refeedPenaltyHours = (state.totalRefeedCalories / baseRate) * 2;
+var activityHours = state.totalActivityCalories / baseRate;
+var refeedPenaltyHours = (state.totalRefeedCalories / baseRate) * 2;
 
 activitySummaryEl.textContent =
-`Aktivitet i alt: ${state.totalActivityCalories} kcal (~${formatHours(activityHours)} ekstra timer)`;
+"Aktivitet i alt: " + state.totalActivityCalories +
+" kcal (~" + formatHours(activityHours) + " ekstra timer)";
 
 refeedSummaryEl.textContent =
-`Refeed i alt: ${state.totalRefeedCalories} kcal (~${formatHours(refeedPenaltyHours)} “straffe-timer”)`;
+"Refeed i alt: " + state.totalRefeedCalories +
+" kcal (~" + formatHours(refeedPenaltyHours) + " “straffe-timer”)";
 }
 
-function syncProfileUI() {
-const p = state.profile;
-ageGroupEl.value = p.ageGroup;
-sexEl.value = p.sex;
-weightEl.value = p.weight;
-muscleLevelEl.value = p.muscleLevel;
-dailyCaloriesEl.textContent = state.dailyCalories;
-}
-
-function updateProfileFromUI() {
-const profile = {
-ageGroup: ageGroupEl.value,
-sex: sexEl.value,
-weight: Number(weightEl.value) || 80,
-muscleLevel: muscleLevelEl.value
-};
-const daily = computeDailyCalories(profile);
-state.profile = profile;
-state.dailyCalories = daily;
-dailyCaloriesEl.textContent = daily;
-saveState();
-updateUI();
-}
-
-// ======= HANDLERE =======
 function handleStart() {
 if (!state.runningSince) {
-const extraHours = Number(initialHoursEl.value) || 0;
+var extraHours = Number(initialHoursEl.value) || 0;
 if (state.elapsedRealMs === 0 && extraHours > 0) {
-state.elapsedRealMs = extraHours * 3_600_000;
+state.elapsedRealMs = extraHours * 3600000;
 }
 state.runningSince = Date.now();
 }
@@ -1216,7 +1208,7 @@ updateUI();
 
 function handlePause() {
 if (state.runningSince) {
-const now = Date.now();
+var now = Date.now();
 state.elapsedRealMs += now - state.runningSince;
 state.runningSince = null;
 saveState();
@@ -1238,7 +1230,7 @@ updateUI();
 }
 
 function handleAddActivity() {
-const val = Number(activityCaloriesEl.value);
+var val = Number(activityCaloriesEl.value);
 if (!val || val <= 0) {
 alert("Skriv et kalorie-anslag for din aktivitet.");
 return;
@@ -1250,7 +1242,7 @@ updateUI();
 }
 
 function handleAddRefeed() {
-const val = Number(refeedCaloriesEl.value);
+var val = Number(refeedCaloriesEl.value);
 if (!val || val <= 0) {
 alert("Skriv et kalorie-anslag for måltidet.");
 return;
@@ -1263,21 +1255,19 @@ updateUI();
 
 function handleResetProfile() {
 if (!confirm("Nulstil profil til standard?")) return;
-state.profile = { ...defaultState.profile };
+state.profile = JSON.parse(JSON.stringify(defaultState.profile));
 state.dailyCalories = computeDailyCalories(state.profile);
 syncProfileUI();
 saveState();
 updateUI();
 }
 
-// ======= INIT =======
+function init() {
 loadState();
-// beregn dagligt kaloriebehov hvis nødvendigt
 state.dailyCalories = computeDailyCalories(state.profile);
 syncProfileUI();
 updateUI();
 
-// Event-listeners
 ageGroupEl.addEventListener("change", updateProfileFromUI);
 sexEl.addEventListener("change", updateProfileFromUI);
 weightEl.addEventListener("change", updateProfileFromUI);
@@ -1292,17 +1282,20 @@ addRefeedBtn.addEventListener("click", handleAddRefeed);
 
 resetProfileBtn.addEventListener("click", handleResetProfile);
 
-infoToggleBtn.addEventListener("click", () => {
-const visible = infoBoxEl.style.display === "block";
+infoToggleBtn.addEventListener("click", function () {
+var visible = infoBoxEl.style.display === "block";
 infoBoxEl.style.display = visible ? "none" : "block";
 });
 
-// tick hver sekund
-setInterval(() => {
+setInterval(function () {
 if (state.runningSince) {
 updateUI();
 }
 }, 1000);
+}
+
+init();
+})();
 </script>
 </body>
 </html>
