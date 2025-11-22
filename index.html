@@ -2,29 +2,30 @@
 <html lang="da">
 <head>
 <meta charset="UTF-8" />
-<title>Faste-tracker v42</title>
+<title>Faste-tracker</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
 :root {
---bg: #05070b;
---card: #111522;
---card-soft: #15192a;
---accent: #4ade80;
---accent-soft: rgba(74, 222, 128, 0.15);
---accent-strong: #22c55e;
---warn: #f97316;
---danger: #ef4444;
---text: #e5e7eb;
---subtle: #9ca3af;
---fat: #22c55e;
---carb: #fbbf24;
---muscle: #fb7185;
---bone: #f97316;
---border-soft: #1f2933;
---badge-gold: #facc15;
---badge-gold-soft: rgba(250, 204, 21, 0.17);
---badge-blue: #38bdf8;
---badge-blue-soft: rgba(56, 189, 248, 0.15);
+--bg: #050812;
+--bg-panel: #101624;
+--bg-panel-soft: #161d2c;
+--accent: #ffb347;
+--accent-strong: #ff7a3c;
+--accent-green: #3fd57b;
+--accent-red: #ff4b5c;
+--text-main: #f7f7ff;
+--text-muted: #a4b0cf;
+--chip-on-bg: #0e2a19;
+--chip-on-border: #27c361;
+--chip-off-bg: #1c2231;
+--chip-off-border: #3d465d;
+--badge-on-bg: #16325f;
+--badge-on-border: #4e8cff;
+--badge-off-bg: #1c2231;
+--badge-off-border: #3d465d;
+--radius-panel: 18px;
+--radius-chip: 999px;
+--shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.45);
 }
 
 * {
@@ -35,1379 +36,1441 @@ body {
 margin: 0;
 padding: 0;
 font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-sans-serif;
-background: radial-gradient(circle at top, #020617, #02040a 45%, #000 100%);
-color: var(--text);
-display: flex;
-justify-content: center;
-min-height: 100vh;
+"Segoe UI", sans-serif;
+background: radial-gradient(circle at top left, #1c2940 0, #050812 55%);
+color: var(--text-main);
 }
 
-.app {
-width: 100%;
-max-width: 900px;
-padding: 16px;
-padding-bottom: 40px;
+.app-shell {
+max-width: 1200px;
+margin: 0 auto;
+padding: 24px 16px 40px;
+}
+
+.app-header {
+margin-bottom: 16px;
+}
+
+.app-title-row {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 4px;
+}
+
+.app-title-dot {
+width: 14px;
+height: 14px;
+border-radius: 50%;
+background: radial-gradient(circle at 30% 30%, #ffdf7a 0, #ff7a3c 60%);
+box-shadow: 0 0 14px rgba(255, 160, 70, 0.8);
 }
 
 h1 {
-font-size: 1.4rem;
-margin: 0 0 4px;
-display: flex;
-align-items: center;
-gap: 0.4rem;
+font-size: 24px;
+font-weight: 700;
+letter-spacing: 0.03em;
+margin: 0;
 }
 
-h1 span.logo-dot {
-width: 18px;
-height: 18px;
-border-radius: 6px;
-background: radial-gradient(circle at 30% 10%, #facc15, #f97316 40%, #991b1b 100%);
-box-shadow: 0 0 12px rgba(248, 250, 252, 0.5);
+.app-subtitle {
+font-size: 13px;
+color: var(--text-muted);
 }
 
-.subtitle {
-font-size: 0.8rem;
-color: var(--subtle);
-margin-bottom: 12px;
-}
+/* layout */
 
-.grid {
+.layout {
 display: grid;
-grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-gap: 12px;
+grid-template-columns: 3fr 2fr;
+gap: 16px;
 }
 
-@media (max-width: 768px) {
-.grid {
-grid-template-columns: minmax(0, 1fr);
+@media (max-width: 900px) {
+.layout {
+grid-template-columns: 1fr;
 }
 }
 
-.card {
-background: radial-gradient(circle at top left, #111827, #020617);
-border-radius: 18px;
-padding: 14px 14px 16px;
-border: 1px solid rgba(148, 163, 184, 0.18);
-box-shadow:
-0 18px 45px rgba(15, 23, 42, 0.95),
-0 0 0 1px rgba(15, 23, 42, 0.9);
+.panel {
+background: radial-gradient(circle at top left, #182235 0, #111726 55%);
+border-radius: var(--radius-panel);
+box-shadow: var(--shadow-soft);
+padding: 16px 18px 18px;
+border: 1px solid rgba(255, 255, 255, 0.02);
 }
 
-.card-header {
+.panel-header {
 display: flex;
 align-items: center;
 justify-content: space-between;
-margin-bottom: 8px;
+margin-bottom: 10px;
 }
 
-.card-title {
-font-size: 0.9rem;
+.panel-title {
+font-size: 15px;
 font-weight: 600;
-display: flex;
-align-items: center;
-gap: 0.35rem;
-}
-
-.card-title span.dot {
-width: 7px;
-height: 7px;
-border-radius: 999px;
-background: var(--accent);
-box-shadow: 0 0 6px rgba(74, 222, 128, 0.9);
+letter-spacing: 0.04em;
+text-transform: uppercase;
+color: #e3ebff;
 }
 
 .chip {
-font-size: 0.7rem;
-padding: 3px 8px;
-border-radius: 999px;
-background: rgba(15, 23, 42, 0.9);
-border: 1px solid rgba(148, 163, 184, 0.35);
-color: var(--subtle);
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 3px 10px;
+border-radius: var(--radius-chip);
+font-size: 11px;
+border: 1px solid transparent;
+white-space: nowrap;
 }
 
-/* Top metrics */
-.top-metrics {
-display: flex;
+.chip-dot {
+width: 7px;
+height: 7px;
+border-radius: 50%;
+}
+
+.chip-on {
+background: var(--chip-on-bg);
+border-color: var(--chip-on-border);
+color: #a5f5c1;
+}
+
+.chip-on .chip-dot {
+background: #42f27d;
+box-shadow: 0 0 8px rgba(101, 255, 166, 0.9);
+}
+
+.chip-off {
+background: var(--chip-off-bg);
+border-color: var(--chip-off-border);
+color: var(--text-muted);
+}
+
+.chip-off .chip-dot {
+background: #6b738a;
+}
+
+/* top stats */
+
+.top-stats {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
 gap: 10px;
-margin-bottom: 8px;
+margin-bottom: 14px;
 }
 
-.metric {
-flex: 1;
-padding: 7px 9px;
-background: radial-gradient(circle at top, rgba(15,23,42,0.9), #020617);
-border-radius: 12px;
-border: 1px solid rgba(51,65,85,0.8);
+.top-stat-card {
+background: rgba(5, 10, 25, 0.85);
+border-radius: 14px;
+padding: 10px 12px;
+border: 1px solid rgba(255, 255, 255, 0.03);
 display: flex;
 flex-direction: column;
 gap: 4px;
 }
 
-.metric-label {
-font-size: 0.7rem;
-color: var(--subtle);
-display: flex;
-align-items: center;
-gap: 4px;
+.top-stat-label {
+font-size: 11px;
+color: var(--text-muted);
+text-transform: uppercase;
+letter-spacing: 0.06em;
 }
 
-.metric-value {
-font-size: 0.95rem;
+.top-stat-value {
+font-size: 20px;
 font-weight: 600;
-letter-spacing: 0.03em;
 }
 
-.metric-value.big {
-font-size: 1.2rem;
+.top-stat-sub {
+font-size: 11px;
+color: var(--text-muted);
 }
 
-.pill {
-font-size: 0.68rem;
-padding: 2px 7px;
-border-radius: 999px;
-background: rgba(15, 23, 42, 0.9);
-border: 1px solid rgba(148, 163, 184, 0.35);
-color: var(--subtle);
+.top-stat-sub strong {
+color: #f5f5ff;
 }
 
-/* Gauge */
-.gauge-wrapper {
+/* gauge */
+
+.gauge-panel {
 margin-top: 4px;
-margin-bottom: 10px;
 }
 
-.gauge-shell {
+.gauge-wrapper {
 position: relative;
 width: 100%;
-max-width: 360px;
-margin: 0 auto;
-aspect-ratio: 1.6 / 1;
-display: flex;
-align-items: flex-end;
-justify-content: center;
-padding-bottom: 8px;
+aspect-ratio: 2.4 / 1;
+margin-bottom: 6px;
+overflow: hidden;
+border-radius: 999px 999px 40% 40%;
+background: radial-gradient(circle at 50% 130%, #050812 0, #050812 60%);
 }
 
 .gauge-arc {
-position: relative;
-width: 100%;
-height: 100%;
+position: absolute;
+inset: 12% 8% 35%;
 border-radius: 999px;
-background:
-conic-gradient(
+background: conic-gradient(
 from 210deg,
-#22c55e 0deg,
-#22c55e 80deg,
-#eab308 120deg,
-#f97316 155deg,
-#ef4444 180deg,
-transparent 180deg,
-transparent 360deg
+#41d574 0deg,
+#b0f25e 80deg,
+#ffd14e 150deg,
+#ff7a3c 210deg,
+#ff4b5c 260deg,
+#ff4b5c 320deg
 );
-mask:
-radial-gradient(circle at 50% 100%, transparent 52%, black 52.1%);
-box-shadow:
-0 0 40px rgba(56, 189, 248, 0.15),
-0 0 80px rgba(34, 197, 94, 0.25);
+-webkit-mask: radial-gradient(circle at 50% 120%, transparent 60%, #000 60%);
+mask: radial-gradient(circle at 50% 120%, transparent 60%, #000 60%);
+opacity: 0.92;
+}
+
+.gauge-inner-shadow {
+position: absolute;
+inset: 16% 12% 40%;
+border-radius: 999px;
+background: radial-gradient(circle at 50% 140%, #050812 0, #050812 70%, transparent 90%);
 opacity: 0.9;
 }
 
-.gauge-inner {
+.gauge-needle {
 position: absolute;
-inset: 16px 10px 0 10px;
-border-radius: 999px;
-background: radial-gradient(circle at top, #020617, #020617 55%, transparent 100%);
-box-shadow: inset 0 18px 32px rgba(0, 0, 0, 0.9);
-}
-
-.gauge-indicator {
-position: absolute;
-bottom: 6px;
+left: 50%;
+bottom: 12%;
+transform-origin: 50% 100%;
+transform: translate(-50%, -100%) rotate(-110deg);
 width: 2px;
-height: 36%;
-background: linear-gradient(to top, #fefefe, #facc15);
-border-radius: 999px;
-box-shadow:
-0 0 10px rgba(248, 250, 252, 0.8),
-0 0 24px rgba(250, 204, 21, 0.7);
-transform-origin: bottom center;
+height: 55%;
 }
 
-.gauge-center-cap {
+.gauge-needle-line {
 position: absolute;
-bottom: 6px;
-width: 18px;
-height: 18px;
+left: 50%;
+bottom: 0;
+width: 2px;
+height: 100%;
+transform: translateX(-50%);
+background: linear-gradient(to top, #ffffff, #ffffff, rgba(255, 255, 255, 0));
+box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
 border-radius: 999px;
-background: radial-gradient(circle at 30% 20%, #e5e7eb, #6b7280 55%, #020617 100%);
+}
+
+.gauge-needle-knob {
+position: absolute;
+left: 50%;
+bottom: 0;
+width: 14px;
+height: 14px;
+transform: translate(-50%, 45%);
+border-radius: 50%;
+background: radial-gradient(circle at 30% 30%, #ffffff 0, #d0d5ff 60%, #6f7bff 100%);
 box-shadow:
-0 0 10px rgba(15, 23, 42, 0.9),
-0 0 0 2px rgba(15, 23, 42, 1);
+0 0 10px rgba(96, 255, 178, 0.9),
+0 0 18px rgba(96, 255, 178, 0.6);
+border: 2px solid #050812;
 }
 
-.gauge-label-row {
-margin-top: -2px;
+.gauge-scale-labels {
+position: absolute;
+inset: 0;
 display: flex;
+align-items: flex-end;
 justify-content: space-between;
-align-items: center;
-font-size: 0.7rem;
-color: var(--subtle);
+padding: 0 24px 10px;
+font-size: 11px;
+color: #b8c3e8;
+pointer-events: none;
 }
 
-.gauge-label-row span {
+.gauge-footer-row {
 display: flex;
 align-items: center;
-gap: 4px;
-}
-
-.gauge-label-dot {
-width: 7px;
-height: 7px;
-border-radius: 999px;
-}
-
-.gauge-label-dot.green {
-background: #22c55e;
-}
-
-.gauge-label-dot.yellow {
-background: #eab308;
-}
-
-.gauge-label-dot.red {
-background: #ef4444;
-}
-
-.gauge-boost {
-margin-top: 4px;
-display: flex;
 justify-content: space-between;
-align-items: baseline;
-font-size: 0.8rem;
+font-size: 12px;
+margin-top: 6px;
 }
 
-.gauge-boost-main {
-font-weight: 600;
+.gauge-footer-row strong {
+font-size: 14px;
 }
 
-.gauge-boost-main span {
-font-size: 1rem;
-color: var(--accent);
+/* energi-bars */
+
+.energy-section {
+margin-top: 10px;
 }
 
-.gauge-boost-sub {
-font-size: 0.7rem;
-color: var(--subtle);
+.energy-title {
+font-size: 12px;
+text-transform: uppercase;
+letter-spacing: 0.06em;
+color: var(--text-muted);
+margin-bottom: 6px;
 }
 
-.divider {
-height: 1px;
-background: linear-gradient(to right, transparent, rgba(148, 163, 184, 0.5), transparent);
-margin: 10px 0;
-}
-
-/* Energy bars */
-.energy-bars {
+.energy-rows {
 display: grid;
-grid-template-columns: minmax(0, 1fr);
-gap: 6px;
-font-size: 0.78rem;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 4px 12px;
 }
 
 .energy-row {
 display: flex;
-align-items: center;
-gap: 6px;
+flex-direction: column;
+gap: 2px;
+font-size: 12px;
 }
 
 .energy-label {
-width: 80px;
 display: flex;
 align-items: center;
-gap: 4px;
-color: var(--subtle);
+justify-content: space-between;
 }
 
-.color-dot {
+.energy-name {
+display: flex;
+align-items: center;
+gap: 6px;
+}
+
+.energy-dot {
 width: 8px;
 height: 8px;
-border-radius: 999px;
+border-radius: 50%;
 }
 
-.energy-bar {
-flex: 1;
-height: 7px;
+.energy-dot.fat {
+background: #3fd57b;
+}
+
+.energy-dot.carb {
+background: #ffd14e;
+}
+
+.energy-dot.muscle {
+background: #ff7a9f;
+}
+
+.energy-dot.bone {
+background: #8ac6ff;
+}
+
+.energy-bar-bg {
+height: 4px;
 border-radius: 999px;
-background: radial-gradient(circle at top, #020617, #020617);
-border: 1px solid rgba(31, 41, 55, 0.9);
+background: #1f2535;
 overflow: hidden;
-position: relative;
 }
 
-.energy-fill {
-position: absolute;
-inset: 0;
-transform-origin: left;
-transform: scaleX(0);
+.energy-bar-fill {
+height: 100%;
+width: 0%;
 border-radius: 999px;
+background: linear-gradient(to right, #3fd57b, #ffd14e);
 }
 
-.energy-value {
-width: 48px;
-text-align: right;
-font-variant-numeric: tabular-nums;
+.energy-bar-fill.carb {
+background: linear-gradient(to right, #ffd14e, #ff7a3c);
 }
 
-/* Autofagi / badges / info */
-.info-grid {
-display: grid;
-grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-gap: 8px;
-margin-top: 6px;
-font-size: 0.78rem;
+.energy-bar-fill.muscle {
+background: linear-gradient(to right, #ff7a9f, #ff4b5c);
 }
 
-@media (max-width: 768px) {
-.info-grid {
-grid-template-columns: minmax(0, 1fr);
-}
+.energy-bar-fill.bone {
+background: linear-gradient(to right, #8ac6ff, #4e8cff);
 }
 
-.info-box {
-background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), #020617);
+/* autofagi */
+
+.autofagi-panel {
+margin-top: 12px;
+padding: 10px 11px 10px;
 border-radius: 14px;
-border: 1px solid rgba(51, 65, 85, 0.8);
-padding: 8px 9px;
+background: linear-gradient(135deg, #111a2b, #0b1525);
+border: 1px solid rgba(255, 255, 255, 0.03);
+font-size: 12px;
 }
 
-.info-title {
-font-size: 0.78rem;
-color: var(--subtle);
-margin-bottom: 4px;
+.autofagi-header {
 display: flex;
 align-items: center;
-gap: 4px;
+justify-content: space-between;
+margin-bottom: 4px;
 }
 
-.badge-row {
+.autofagi-header-title {
 display: flex;
+align-items: center;
 gap: 6px;
-flex-wrap: wrap;
+font-size: 13px;
+font-weight: 500;
+}
+
+.autofagi-header-title span.emoji {
+font-size: 16px;
+}
+
+.autofagi-lines {
+display: flex;
+flex-direction: column;
+gap: 2px;
+color: var(--text-muted);
+}
+
+.autofagi-lines strong {
+color: #f7f7ff;
+}
+
+.autofagi-footnote {
 margin-top: 4px;
+font-size: 11px;
+color: var(--text-muted);
 }
 
 .badge {
 display: inline-flex;
 align-items: center;
-gap: 4px;
-padding: 3px 8px;
+gap: 6px;
+padding: 4px 10px;
 border-radius: 999px;
-font-size: 0.7rem;
-border: 1px solid rgba(248, 250, 252, 0.25);
-background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), #020617);
-box-shadow: 0 0 10px rgba(148, 163, 184, 0.3);
-}
-
-.badge.gold {
-border-color: var(--badge-gold);
-background: radial-gradient(circle at top, rgba(161, 98, 7, 0.95), #0b1120);
-color: #fef9c3;
-box-shadow:
-0 0 16px rgba(250, 204, 21, 0.55),
-0 0 48px rgba(250, 204, 21, 0.25);
-animation: pulse-gold 1.5s infinite ease-in-out;
-}
-
-.badge.blue {
-border-color: var(--badge-blue);
-background: radial-gradient(circle at top, rgba(8, 47, 73, 0.98), #020617);
-color: #e0f2fe;
-box-shadow:
-0 0 16px rgba(56, 189, 248, 0.55),
-0 0 48px rgba(56, 189, 248, 0.25);
-animation: pulse-blue 1.5s infinite ease-in-out;
-}
-
-.badge-icon {
-font-size: 0.8rem;
-}
-
-@keyframes pulse-gold {
-0%, 100% { transform: translateY(0); box-shadow: 0 0 12px rgba(250, 204, 21, 0.55), 0 0 42px rgba(250, 204, 21, 0.3); }
-50% { transform: translateY(-1px); box-shadow: 0 0 20px rgba(250, 204, 21, 0.9), 0 0 60px rgba(250, 204, 21, 0.5); }
-}
-
-@keyframes pulse-blue {
-0%, 100% { transform: translateY(0); box-shadow: 0 0 12px rgba(56, 189, 248, 0.55), 0 0 42px rgba(56, 189, 248, 0.3); }
-50% { transform: translateY(-1px); box-shadow: 0 0 20px rgba(56, 189, 248, 0.9), 0 0 60px rgba(56, 189, 248, 0.5); }
-}
-
-.auto-key {
-font-size: 0.72rem;
-color: var(--subtle);
-margin-top: 4px;
-line-height: 1.3;
-}
-
-/* History section */
-.history-list {
-margin-top: 4px;
-max-height: 140px;
-overflow-y: auto;
-padding-right: 2px;
-}
-
-.history-item {
-border-bottom: 1px solid rgba(31, 41, 55, 0.85);
-padding: 4px 0;
-font-size: 0.72rem;
-display: flex;
-justify-content: space-between;
-gap: 8px;
-}
-
-.history-item:last-child {
-border-bottom: none;
-}
-
-.history-main {
-color: var(--text);
-}
-
-.history-sub {
-color: var(--subtle);
-text-align: right;
+font-size: 11px;
+border: 1px solid transparent;
 white-space: nowrap;
 }
 
-/* Profile + controls */
-.profile-card {
-background: radial-gradient(circle at top, #020617, #020617 55%, #020617 100%);
-border-radius: 18px;
-padding: 12px 14px 16px;
-border: 1px solid rgba(51, 65, 85, 0.9);
-box-shadow:
-0 12px 36px rgba(15, 23, 42, 0.95),
-0 0 0 1px rgba(15, 23, 42, 0.9);
+.badge-on {
+background: var(--badge-on-bg);
+border-color: var(--badge-on-border);
+color: #d4e5ff;
+box-shadow: 0 0 12px rgba(78, 140, 255, 0.4);
 }
 
-.profile-grid {
-display: grid;
-grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-gap: 10px;
+.badge-off {
+background: var(--badge-off-bg);
+border-color: var(--badge-off-border);
+color: var(--text-muted);
 }
 
-@media (max-width: 768px) {
-.profile-grid {
-grid-template-columns: minmax(0, 1fr);
-}
-}
-
-.field-group {
-margin-bottom: 6px;
-}
-
-.field-label {
-font-size: 0.75rem;
-color: var(--subtle);
-margin-bottom: 3px;
+.badge-row {
 display: flex;
-align-items: center;
-gap: 4px;
+flex-wrap: wrap;
+gap: 6px;
+margin-top: 6px;
+}
+
+/* højre side – profil */
+
+.form-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 8px 10px;
+margin-top: 4px;
+font-size: 12px;
+}
+
+.form-field {
+display: flex;
+flex-direction: column;
+gap: 3px;
+}
+
+.form-label {
+color: var(--text-muted);
+font-size: 11px;
 }
 
 select,
-input[type="number"] {
+input[type="number"],
+input[type="text"] {
 width: 100%;
-padding: 6px 8px;
-border-radius: 10px;
-border: 1px solid rgba(55, 65, 81, 0.9);
-background: #020617;
-color: var(--text);
-font-size: 0.8rem;
+border-radius: 999px;
+border: 1px solid rgba(255, 255, 255, 0.07);
+background: rgba(5, 9, 20, 0.9);
+color: var(--text-main);
+padding: 4px 10px;
+font-size: 13px;
 outline: none;
+-webkit-appearance: none;
+appearance: none;
 }
 
 select:focus,
-input[type="number"]:focus {
-border-color: var(--accent);
-box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.4);
+input[type="number"]:focus,
+input[type="text"]:focus {
+border-color: rgba(119, 182, 255, 0.9);
+box-shadow: 0 0 0 1px rgba(119, 182, 255, 0.5);
 }
 
-.field-inline {
-display: flex;
-gap: 8px;
-}
-
-.field-inline > div {
-flex: 1;
-}
-
-.help-text {
-font-size: 0.7rem;
-color: var(--subtle);
-margin-top: 2px;
-}
-
-.controls {
-margin-top: 8px;
-display: flex;
-gap: 8px;
-flex-wrap: wrap;
-align-items: center;
-}
-
-button {
-border: none;
+.small-pill {
+font-size: 11px;
+padding: 3px 8px;
 border-radius: 999px;
-padding: 7px 16px;
-font-size: 0.8rem;
-font-weight: 600;
-cursor: pointer;
+background: rgba(255, 255, 255, 0.03);
+border: 1px solid rgba(255, 255, 255, 0.06);
 display: inline-flex;
 align-items: center;
-gap: 6px;
-transition: transform 0.08s ease, box-shadow 0.1s ease, background 0.1s ease;
+gap: 4px;
+color: var(--text-muted);
 }
 
-button span.icon {
-font-size: 0.9rem;
+.small-pill strong {
+color: #f5f5ff;
+}
+
+/* aktivitet-knapper */
+
+.activity-row {
+display: flex;
+gap: 6px;
+align-items: center;
+margin-top: 4px;
+}
+
+.btn {
+border-radius: 999px;
+border: none;
+font-size: 13px;
+padding: 7px 14px;
+cursor: pointer;
+font-weight: 500;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+transition: transform 0.05s ease, box-shadow 0.05s ease, background 0.1s;
 }
 
 .btn-primary {
-background: linear-gradient(to right, #22c55e, #4ade80);
-color: #022c22;
-box-shadow:
-0 10px 20px rgba(34, 197, 94, 0.4),
-0 0 12px rgba(22, 163, 74, 0.9);
+background: linear-gradient(135deg, #ffb347, #ff7a3c);
+color: #11121b;
+box-shadow: 0 8px 18px rgba(255, 138, 76, 0.45);
 }
 
 .btn-primary:active {
-transform: translateY(1px) scale(0.99);
-box-shadow:
-0 4px 10px rgba(34, 197, 94, 0.4),
-0 0 6px rgba(22, 163, 74, 0.9);
+transform: translateY(1px);
+box-shadow: 0 4px 10px rgba(255, 138, 76, 0.4);
 }
 
 .btn-secondary {
-background: #020617;
-color: var(--subtle);
-border: 1px solid rgba(75, 85, 99, 0.9);
+background: rgba(255, 255, 255, 0.04);
+color: #f5f5ff;
+border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .btn-secondary:active {
-transform: translateY(1px) scale(0.99);
-box-shadow: 0 4px 12px rgba(15, 23, 42, 0.9);
+transform: translateY(1px);
 }
 
-button:disabled {
-opacity: 0.45;
-cursor: default;
-transform: none;
-box-shadow: none;
+.btn-danger {
+background: rgba(255, 75, 92, 0.12);
+color: #ff9ba7;
+border: 1px solid rgba(255, 75, 92, 0.5);
 }
 
-.warning-text {
-font-size: 0.7rem;
-color: var(--warn);
-margin-top: 4px;
+.btn-danger:active {
+transform: translateY(1px);
+}
+
+.btn-small {
+font-size: 11px;
+padding: 5px 10px;
+}
+
+.btn-full {
+width: 100%;
+justify-content: center;
+}
+
+.btn-group {
+display: flex;
+gap: 6px;
+margin-top: 6px;
+}
+
+.history-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-size: 12px;
+margin-top: 12px;
+margin-bottom: 4px;
+color: var(--text-muted);
+}
+
+.history-list {
+display: flex;
+flex-direction: column;
+gap: 6px;
+max-height: 160px;
+overflow-y: auto;
+padding-right: 4px;
+}
+
+.history-empty {
+font-size: 11px;
+color: var(--text-muted);
+font-style: italic;
+}
+
+.history-chip {
+border-radius: 12px;
+padding: 6px 9px;
+background: rgba(5, 9, 20, 0.9);
+border: 1px solid rgba(255, 255, 255, 0.06);
+display: flex;
+flex-direction: column;
+gap: 2px;
+font-size: 11px;
+}
+
+.history-chip-main {
+display: flex;
+justify-content: space-between;
+color: #e4ecff;
+}
+
+.history-chip-sub {
+display: flex;
+justify-content: space-between;
+color: var(--text-muted);
 }
 
 .footer-note {
 margin-top: 10px;
-font-size: 0.68rem;
-color: var(--subtle);
+font-size: 10px;
+color: var(--text-muted);
 line-height: 1.4;
+}
+
+@media (max-width: 700px) {
+.top-stats {
+grid-template-columns: 1fr;
+}
+.form-grid {
+grid-template-columns: 1fr;
+}
+.energy-rows {
+grid-template-columns: 1fr;
+}
 }
 </style>
 </head>
 <body>
-<div class="app">
-<h1>
-<span class="logo-dot"></span>
-Faste-tracker
-</h1>
-<div class="subtitle">
-Tryk start, når du tager sidste bid – og se, hvordan din faste “booster” fedtforbrændingen over tid.
+<div class="app-shell">
+<header class="app-header">
+<div class="app-title-row">
+<div class="app-title-dot"></div>
+<h1>Faste-tracker</h1>
 </div>
+<div class="app-subtitle">
+Tryk start, når du tager sidste bid mad – og se, hvordan din faste "booster"
+fedtforbrændingen over tid.
+</div>
+</header>
 
-<div class="grid">
-<!-- LEFT: LIVE FASTING VIEW -->
-<div class="card" id="liveCard">
-<div class="card-header">
-<div class="card-title">
-<span class="dot"></span>
-Din faste lige nu
-</div>
-<div class="chip" id="statusChip">Ikke startet</div>
-</div>
-
-<!-- Top metrics -->
-<div class="top-metrics">
-<div class="metric">
-<div class="metric-label">
-⏱ Varighed
-</div>
-<div class="metric-value big" id="elapsedTime">00:00:00</div>
-<div class="pill" id="elapsedHoursLabel">0,0 timer</div>
-</div>
-<div class="metric">
-<div class="metric-label">
-⚖️ Samlet vægttab
-</div>
-<div class="metric-value big" id="weightLossGrams">0 g</div>
-<div class="pill" id="weightLossKilos">0,000 kg</div>
+<div class="layout">
+<!-- VENSTRE SIDE: LIVE FASTE -->
+<section class="panel">
+<div class="panel-header">
+<div class="panel-title">Din faste lige nu</div>
+<div class="chip chip-off" data-live-status-chip>
+<span class="chip-dot"></span>
+<span data-live-status-text>Ikke startet</span>
 </div>
 </div>
 
-<!-- Gauge -->
+<div class="top-stats">
+<div class="top-stat-card">
+<div class="top-stat-label">Varighed</div>
+<div class="top-stat-value" data-duration>00:00:00</div>
+<div class="top-stat-sub">
+<strong data-duration-hours>0,0 t</strong> ·
+Effektiv faste inkl. aktivitet & refeed:
+<strong data-effective-hours>0,0 t</strong>
+</div>
+</div>
+<div class="top-stat-card">
+<div class="top-stat-label">Samlet vægttab</div>
+<div class="top-stat-value" data-total-loss>0 g</div>
+<div class="top-stat-sub">
+<strong data-total-loss-kg>0,000 kg</strong> ·
+Estimeret tab pga. kalorieunderskud & fedtandel.
+</div>
+</div>
+</div>
+
+<!-- FEDT-BOOST -->
+<div class="gauge-panel">
+<div class="panel-header" style="margin-bottom: 4px;">
+<div class="panel-title">Fedtforbrændings-boost</div>
+<span class="chip chip-on chip-small">
+<span class="chip-dot"></span>
+Live fat-burn
+</span>
+</div>
+
 <div class="gauge-wrapper">
-<div class="gauge-shell">
 <div class="gauge-arc"></div>
-<div class="gauge-inner"></div>
-<div class="gauge-indicator" id="gaugeIndicator"></div>
-<div class="gauge-center-cap"></div>
+<div class="gauge-inner-shadow"></div>
+
+<div class="gauge-needle" data-gauge-needle>
+<div class="gauge-needle-line"></div>
+<div class="gauge-needle-knob"></div>
 </div>
-<div class="gauge-label-row">
-<span>
-<span class="gauge-label-dot green"></span>
-<span>Blid fedtforbrænding</span>
-</span>
-<span>
-<span class="gauge-label-dot yellow"></span>
+
+<div class="gauge-scale-labels">
+<span>Lav</span>
+<span>Mellem</span>
 <span>Høj</span>
-</span>
-<span>
-<span class="gauge-label-dot red"></span>
-<span>Max boost</span>
-</span>
+<span>Max</span>
 </div>
-<div class="gauge-boost">
-<div class="gauge-boost-main">
-Fedt-boost: <span id="fatBoost">1,0×</span>
 </div>
-<div class="gauge-boost-sub">
-Jo længere du faster, jo større andel af energien kommer fra fedt.
+
+<div class="gauge-footer-row">
+<div>
+Fedt-boost i dag:
+<strong data-gauge-boost>1,0×</strong>
+</div>
+<div>
+Fedtandel lige nu:
+<strong data-gauge-fat-share>10%</strong>
 </div>
 </div>
 </div>
 
-<div class="divider"></div>
-
-<!-- Energy breakdown -->
-<div class="energy-bars">
+<!-- ENERGIKILDER -->
+<div class="energy-section">
+<div class="energy-title">Energikilder lige nu (groft skøn over energifordeling)</div>
+<div class="energy-rows">
 <div class="energy-row">
 <div class="energy-label">
-<span class="color-dot" style="background: var(--fat);"></span>
+<div class="energy-name">
+<span class="energy-dot fat"></span>
 <span>Fedt</span>
 </div>
-<div class="energy-bar">
-<div class="energy-fill" id="fatFill" style="background: linear-gradient(to right, #22c55e, #4ade80);"></div>
+<span data-fat-pct>10%</span>
 </div>
-<div class="energy-value" id="fatPct">0%</div>
+<div class="energy-bar-bg">
+<div class="energy-bar-fill fat" data-bar-fat></div>
+</div>
 </div>
 <div class="energy-row">
 <div class="energy-label">
-<span class="color-dot" style="background: var(--carb);"></span>
+<div class="energy-name">
+<span class="energy-dot carb"></span>
 <span>Kulhydrat</span>
 </div>
-<div class="energy-bar">
-<div class="energy-fill" id="carbFill" style="background: linear-gradient(to right, #eab308, #facc15);"></div>
+<span data-carb-pct>90%</span>
 </div>
-<div class="energy-value" id="carbPct">0%</div>
+<div class="energy-bar-bg">
+<div class="energy-bar-fill carb" data-bar-carb></div>
+</div>
 </div>
 <div class="energy-row">
 <div class="energy-label">
-<span class="color-dot" style="background: var(--muscle);"></span>
+<div class="energy-name">
+<span class="energy-dot muscle"></span>
 <span>Muskler</span>
 </div>
-<div class="energy-bar">
-<div class="energy-fill" id="muscleFill" style="background: linear-gradient(to right, #fb7185, #f97373);"></div>
+<span data-muscle-pct>0%</span>
 </div>
-<div class="energy-value" id="musclePct">0%</div>
+<div class="energy-bar-bg">
+<div class="energy-bar-fill muscle" data-bar-muscle></div>
+</div>
 </div>
 <div class="energy-row">
 <div class="energy-label">
-<span class="color-dot" style="background: var(--bone);"></span>
+<div class="energy-name">
+<span class="energy-dot bone"></span>
 <span>Knogler</span>
 </div>
-<div class="energy-bar">
-<div class="energy-fill" id="boneFill" style="background: linear-gradient(to right, #f97316, #fb923c);"></div>
+<span data-bone-pct>0%</span>
 </div>
-<div class="energy-value" id="bonePct">0%</div>
+<div class="energy-bar-bg">
+<div class="energy-bar-fill bone" data-bar-bone></div>
+</div>
+</div>
 </div>
 </div>
 
-<!-- Autofagi & badges & stats -->
-<div class="info-grid">
-<div class="info-box">
-<div class="info-title">
-🧬 Autofagi
+<!-- AUTOFAGI -->
+<div class="autofagi-panel">
+<div class="autofagi-header">
+<div class="autofagi-header-title">
+<span class="emoji">🩺</span>
+<span>Autofagi</span>
 </div>
-<div id="autophagyInfo">
+<div class="chip chip-off" data-autofagy-status>
+<span class="chip-dot"></span>
+<span>Ikke aktiv endnu</span>
+</div>
+</div>
+<div class="autofagi-lines">
 <div>Forventet start: ca. 16 timer uden mad.</div>
-<div id="autophagyCountdown">Tid til autofagi: –</div>
-<div id="autophagyActive">Timer i autofagi: 0,0</div>
+<div>
+Tid til autofagi:
+<strong data-time-to-autofagy>16,0 t</strong>
 </div>
-<div class="auto-key">
-Autofagi = kroppens “oprydning” af slidte celler og affaldsprodukter. Effekten er groft modelleret og ikke personlig medicinsk rådgivning.
+<div>
+Timer i autofagi:
+<strong data-hours-in-autofagy>0,0 t</strong>
 </div>
 </div>
-<div class="info-box">
-<div class="info-title">
-🏅 Dine badges
+<div class="badge-row">
+<div class="badge badge-off" data-badge-official-fast>
+🥇 Officielt i faste (12+ t)
 </div>
-<div class="badge-row" id="badgeRow">
-<span class="badge">
-<span class="badge-icon">⬜</span>
-Ingen badges endnu – start en faste
+<div class="badge badge-off" data-badge-autofagy>
+🔧 Autofagi aktiv (16+ t)
+</div>
+</div>
+<div class="autofagi-footnote">
+Autofagi = kroppens "oprydning" af slidte celler og affaldsstoffer.
+Effekten er groft modelleret og ikke personlig medicinsk rådgivning.
+</div>
+</div>
+</section>
+
+<!-- HØJRE SIDE: PROFIL & HISTORIK -->
+<section class="panel">
+<div class="panel-header">
+<div class="panel-title">Din profil & opstart</div>
+<span class="small-pill">
+Gemmes lokalt på enheden
 </span>
 </div>
-<div class="auto-key">
-<strong>Faste-badge:</strong> efter 12 timer.
-<strong>Autofagi-badge:</strong> efter 16 timer.
-</div>
-</div>
-</div>
 
-<div class="divider"></div>
-
-<div class="info-grid">
-<div class="info-box">
-<div class="info-title">
-📊 Historik (gemte faster)
-</div>
-<div id="historySummary" style="font-size:0.75rem; margin-bottom:4px;">
-Ingen gemte faster endnu.
-</div>
-<div class="history-list" id="historyList"></div>
-</div>
-<div class="info-box">
-<div class="info-title">
-ℹ️ Kort forklaring
-</div>
-<div style="font-size:0.72rem; color:var(--subtle); line-height:1.35;">
-• Vægttabet er et forsigtigt estimat baseret på din vægt, alder, muskelmasse og hvor stor andel af energien, der kommer fra fedt over tid.<br/>
-• I starten kommer mest energi fra kulhydrat-lagre. Længere inde i fasten stiger fedt-andelen – og dermed dit “fedt-boost”.<br/>
-• Tallene er forenklede og kan afvige fra din virkelighed. Se dem som motivation, ikke som præcis måling.
-</div>
-</div>
-</div>
-</div>
-
-<!-- RIGHT: PROFILE + CONTROLS -->
-<div class="profile-card">
-<div class="card-header">
-<div class="card-title">
-<span class="dot"></span>
-Din profil & start
-</div>
-<div class="chip" id="bmrChip">Dagligt forbrug: –</div>
-</div>
-
-<div class="profile-grid">
-<div>
-<div class="field-group">
-<div class="field-label">Køn</div>
-<select id="gender">
-<option value="male">Mand</option>
-<option value="female">Kvinde</option>
-<option value="other">Andet / vil ikke sige</option>
+<div class="form-grid">
+<div class="form-field">
+<div class="form-label">Køn</div>
+<select data-input-gender>
+<option value="mand">Mand</option>
+<option value="kvinde">Kvinde</option>
 </select>
 </div>
-
-<div class="field-group">
-<div class="field-label">Alder</div>
-<select id="ageGroup">
-<option value="18-29">18–29</option>
-<option value="30-39">30–39</option>
-<option value="40-49">40–49</option>
-<option value="50-59" selected>50–59</option>
-<option value="60-69">60–69</option>
+<div class="form-field">
+<div class="form-label">Aldersgruppe</div>
+<select data-input-age>
+<option value="18-29">18-29</option>
+<option value="30-39">30-39</option>
+<option value="40-49">40-49</option>
+<option value="50-59" selected>50-59</option>
+<option value="60-69">60-69</option>
 <option value="70+">70+</option>
 </select>
 </div>
-
-<div class="field-group">
-<div class="field-label">Vægt (kg)</div>
-<input type="number" id="weight" min="40" max="200" step="0.5" value="85" />
-<div class="help-text">
-Brug gerne din reelle kropsvægt – det gør estimaterne mere brugbare.
+<div class="form-field">
+<div class="form-label">Vægt (kg)</div>
+<input type="number" min="35" max="200" step="0.5" value="85" data-input-weight />
 </div>
-</div>
-
-<div class="field-group">
-<div class="field-label">Muskelmasse</div>
-<select id="muscleLevel">
-<option value="low">Lav / stillesiddende</option>
-<option value="normal" selected>Normal</option>
-<option value="high">Høj / meget muskuløs</option>
+<div class="form-field">
+<div class="form-label">Muskel-niveau</div>
+<select data-input-muscle>
+<option value="lille_muskulatur">Lille muskelmasse</option>
+<option value="normal">Normal</option>
+<option value="muskuloes" selected>Muskuløs</option>
+<option value="meget_muskuloes">Meget muskuløs</option>
 </select>
-<div class="help-text">
-Høj muskelmasse = højere dagligt energiforbrug.
 </div>
+<div class="form-field">
+<div class="form-label">Allerede fastet (timer)</div>
+<input
+type="number"
+min="0"
+max="72"
+step="0.5"
+value="0"
+data-input-already-fast
+/>
+</div>
+<div class="form-field">
+<div class="form-label">Refeed-måltid (kcal)</div>
+<input
+type="number"
+min="0"
+max="6000"
+step="10"
+value="0"
+data-input-refeed
+/>
+</div>
+<div class="form-field">
+<div class="form-label">Aktivitet i dag (kcal)</div>
+<input
+type="number"
+min="0"
+max="6000"
+step="10"
+value="0"
+data-input-activity-today
+/>
+</div>
+<div class="form-field">
+<div class="form-label">Estimeret basisforbrænding</div>
+<span class="small-pill">
+BMR ca.
+<strong data-bmr-label>2200 kcal/døgn</strong>
+</span>
 </div>
 </div>
 
-<div>
-<div class="field-group">
-<div class="field-label">
-Allerede i gang?
+<!-- EKSTRA AKTIVITET -->
+<div class="form-field" style="margin-top:10px;">
+<div class="form-label">Ekstra bevægelse (læg "godt-gjort" til faste-tiden)</div>
+<div class="activity-row">
+<input
+type="number"
+min="0"
+max="4000"
+step="10"
+value="0"
+placeholder="fx 400 kcal"
+data-input-add-activity
+/>
+<button class="btn btn-secondary btn-small" data-btn-add-activity>
++ Læg til aktivitet
+</button>
 </div>
-<div class="field-inline">
-<div>
-<input type="number" id="alreadyHours" min="0" max="72" step="0.25" value="0" />
-</div>
-<div>
-<div class="help-text">
-Hvor mange timer siden er det, du sidst spiste?<br />
-(0 = jeg starter nu)
-</div>
-</div>
+<div style="margin-top:4px;font-size:11px;color:var(--text-muted);">
+Samlet aktivitet: <strong data-total-activity>0 kcal</strong>
 </div>
 </div>
 
-<div class="field-group">
-<div class="field-label">Faste-kontrol</div>
-<div class="controls">
-<button class="btn-primary" id="startBtn">
-<span class="icon">▶️</span>
-Start / genoptag faste
+<!-- KNAPPER -->
+<div class="btn-group">
+<button class="btn btn-primary btn-full" data-btn-start>
+▶️ Start / genoptag
 </button>
-<button class="btn-secondary" id="stopBtn" disabled>
-<span class="icon">⏹</span>
-Stop og evt. gem
+<button class="btn btn-secondary btn-full" data-btn-stop>
+⏸ Stop faste
+</button>
+<button class="btn btn-danger btn-full" data-btn-reset>
+🔁 Nulstil alt
 </button>
 </div>
-<div class="help-text">
-Når du stopper, kan du vælge at gemme fasten i din historik (kræver min. 12 timers faste).
+
+<!-- HISTORIK -->
+<div class="history-header">
+<span>Faste-historik (lokalt)</span>
+<button class="btn btn-secondary btn-small" data-btn-save-fast>
+💾 Gem denne faste
+</button>
 </div>
-<div class="warning-text" id="shortFastWarning" style="display:none;">
-Fasten er under 12 timer – den kan ikke gemmes i historikken.
+<div class="history-list" data-history-container>
+<span class="history-empty">Ingen gemte faster endnu.</span>
 </div>
-</div>
-</div>
+<div style="margin-top:6px; display:flex; justify-content:flex-end;">
+<button class="btn btn-danger btn-small" data-btn-clear-history>
+Ryd historik
+</button>
 </div>
 
 <div class="footer-note">
-Denne app er kun til motivation og selv-eksperimenter. Den kan ikke erstatte lægefaglig rådgivning.
-Søg altid læge, hvis du er i tvivl, har sygdom, er på medicin eller har haft spiseforstyrrelser.
+Appen er et simpelt motivationsværktøj – ikke lægefaglig rådgivning.
+Tal er skøn baseret på egne input.
 </div>
-</div>
+</section>
 </div>
 </div>
 
+<!-- LOGIK – INGEN DESIGN-ÆNDRING -->
 <script>
-// ----------- STATE & PERSISTENCE -----------
-const STORAGE_KEY = "fastAppState_v42";
+const STORAGE_KEY_STATE = "fastetracker_state_v47";
+const STORAGE_KEY_HISTORY = "fastetracker_history_v47";
+const AUTOPHAGY_THRESHOLD_HOURS = 16;
+
+function toNumber(v, fallback = 0) {
+const n = parseFloat(v);
+return isNaN(n) ? fallback : n;
+}
+
+function formatDuration(seconds) {
+if (!isFinite(seconds) || seconds < 0) seconds = 0;
+const h = Math.floor(seconds / 3600);
+const m = Math.floor((seconds % 3600) / 60);
+const s = Math.floor(seconds % 60);
+return (
+String(h).padStart(2, "0") +
+":" +
+String(m).padStart(2, "0") +
+":" +
+String(s).padStart(2, "0")
+);
+}
+
+function round1(x) {
+return Math.round(x * 10) / 10;
+}
+
+function roundGram(x) {
+return Math.round(x * 10) / 10;
+}
+
+function calcBMR({ gender, ageGroup, weight, muscleLevel }) {
+let perKg = gender === "kvinde" ? 20 : 22;
+
+if (ageGroup === "18-29") perKg += 1.5;
+else if (ageGroup === "30-39") perKg += 1;
+else if (ageGroup === "40-49") perKg += 0.5;
+else if (ageGroup === "60-69") perKg -= 1;
+else if (ageGroup === "70+") perKg -= 2;
+
+if (muscleLevel === "muskuloes") perKg += 2;
+else if (muscleLevel === "meget_muskuloes") perKg += 4;
+else if (muscleLevel === "lille_muskulatur") perKg -= 1.5;
+
+const bmr = perKg * weight;
+return Math.max(1200, Math.min(3500, bmr));
+}
+
+function getFuelAndBoost(effectiveHours) {
+if (!isFinite(effectiveHours) || effectiveHours < 0) effectiveHours = 0;
+let fatShare;
+
+if (effectiveHours <= 0) {
+fatShare = 0.1;
+} else if (effectiveHours < 12) {
+fatShare = 0.1 + (effectiveHours / 12) * 0.3; // 10->40%
+} else if (effectiveHours < 16) {
+fatShare = 0.4 + ((effectiveHours - 12) / 4) * 0.15; // 40->55%
+} else if (effectiveHours < 24) {
+fatShare = 0.55 + ((effectiveHours - 16) / 8) * 0.15; // 55->70%
+} else if (effectiveHours < 48) {
+fatShare = 0.7 + ((effectiveHours - 24) / 24) * 0.1; // 70->80%
+} else {
+fatShare = 0.8;
+}
+
+fatShare = Math.max(0.1, Math.min(0.8, fatShare));
+
+const carbShare = 1 - fatShare;
+const boost = 1 + ((fatShare - 0.1) * 6) / 0.8;
+
+return {
+fatShare,
+carbShare,
+muscleShare: 0,
+boneShare: 0,
+boost,
+};
+}
+
+function fuelShareToAngle(fatShare) {
+const minAngle = -110;
+const maxAngle = 110;
+const clamped = Math.max(0.1, Math.min(0.8, fatShare));
+const t = (clamped - 0.1) / 0.7;
+return minAngle + t * (maxAngle - minAngle);
+}
+
+const els = {
+statusChip: document.querySelector("[data-live-status-chip]"),
+statusText: document.querySelector("[data-live-status-text]"),
+
+durationLabel: document.querySelector("[data-duration]"),
+durationHoursLabel: document.querySelector("[data-duration-hours]"),
+totalLossLabel: document.querySelector("[data-total-loss]"),
+totalLossKgLabel: document.querySelector("[data-total-loss-kg]"),
+effectiveHoursLabel: document.querySelector("[data-effective-hours]"),
+
+fatBar: document.querySelector("[data-bar-fat]"),
+carbBar: document.querySelector("[data-bar-carb]"),
+muscleBar: document.querySelector("[data-bar-muscle]"),
+boneBar: document.querySelector("[data-bar-bone]"),
+
+fatPctLabel: document.querySelector("[data-fat-pct]"),
+carbPctLabel: document.querySelector("[data-carb-pct]"),
+musclePctLabel: document.querySelector("[data-muscle-pct]"),
+bonePctLabel: document.querySelector("[data-bone-pct]"),
+
+gaugeNeedle: document.querySelector("[data-gauge-needle]"),
+gaugeBoostLabel: document.querySelector("[data-gauge-boost]"),
+gaugeFatShareLabel: document.querySelector("[data-gauge-fat-share]"),
+
+autofagyStatusChip: document.querySelector("[data-autofagy-status]"),
+timeToAutofagyLabel: document.querySelector("[data-time-to-autofagy]"),
+hoursInAutofagyLabel: document.querySelector("[data-hours-in-autofagy]"),
+
+gender: document.querySelector("[data-input-gender]"),
+ageGroup: document.querySelector("[data-input-age]"),
+weight: document.querySelector("[data-input-weight]"),
+muscleLevel: document.querySelector("[data-input-muscle]"),
+alreadyFasted: document.querySelector("[data-input-already-fast]"),
+refeedKcal: document.querySelector("[data-input-refeed]"),
+activityTodayKcal: document.querySelector("[data-input-activity-today]"),
+bmrLabel: document.querySelector("[data-bmr-label]"),
+
+addActivityKcal: document.querySelector("[data-input-add-activity]"),
+addActivityBtn: document.querySelector("[data-btn-add-activity]"),
+totalActivityLabel: document.querySelector("[data-total-activity]"),
+
+startBtn: document.querySelector("[data-btn-start]"),
+stopBtn: document.querySelector("[data-btn-stop]"),
+resetBtn: document.querySelector("[data-btn-reset]"),
+
+historyContainer: document.querySelector("[data-history-container]"),
+saveFastBtn: document.querySelector("[data-btn-save-fast]"),
+clearHistoryBtn: document.querySelector("[data-btn-clear-history]"),
+
+officialFastChip: document.querySelector("[data-badge-official-fast]"),
+autofagyBadgeChip: document.querySelector("[data-badge-autofagy]"),
+};
 
 let state = {
-version: 42,
-profile: {
-gender: "male",
-ageGroup: "50-59",
-weight: 85,
-muscleLevel: "normal",
-},
-startTime: null, // ISO string
-offsetSeconds: 0, // allerede-fastet tid i sekunder ved start
 isRunning: false,
-history: [],
+startTimestamp: null,
+baseStartHours: 0,
+
+gender: "mand",
+ageGroup: "50-59",
+weight: 80,
+muscleLevel: "normal",
+
+refeedKcal: 0,
+activityTodayKcal: 0,
+addedActivityKcal: 0,
+
+bmr: 2200,
+totalDeficitKcal: 0,
+totalFatLossGram: 0,
 };
-
-function loadState() {
-try {
-const raw = localStorage.getItem(STORAGE_KEY);
-if (!raw) return;
-const saved = JSON.parse(raw);
-if (!saved || typeof saved !== "object") return;
-
-// basic merge
-state = {
-...state,
-...saved,
-profile: { ...state.profile, ...(saved.profile || {}) },
-history: Array.isArray(saved.history) ? saved.history : [],
-};
-
-// Re-hydrate UI
-if (state.profile) {
-document.getElementById("gender").value = state.profile.gender || "male";
-document.getElementById("ageGroup").value = state.profile.ageGroup || "50-59";
-document.getElementById("weight").value = state.profile.weight ?? 85;
-document.getElementById("muscleLevel").value = state.profile.muscleLevel || "normal";
-}
-
-updateBmrDisplay();
-renderHistorySummary();
-} catch (e) {
-console.error("Kunne ikke loade state:", e);
-}
-}
 
 function saveState() {
 try {
-localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(state));
 } catch (e) {
-console.error("Kunne ikke gemme state:", e);
+console.warn("Kunne ikke gemme state:", e);
 }
 }
 
-// ----------- PROFILE & BMR ESTIMATE -----------
-function getNumericAge(ageGroup) {
-switch (ageGroup) {
-case "18-29": return 25;
-case "30-39": return 35;
-case "40-49": return 45;
-case "50-59": return 55;
-case "60-69": return 65;
-case "70+": return 75;
-default: return 40;
+function loadState() {
+try {
+const raw = localStorage.getItem(STORAGE_KEY_STATE);
+if (!raw) return;
+const data = JSON.parse(raw);
+state = { ...state, ...data };
+} catch (e) {
+console.warn("Kunne ikke læse state:", e);
 }
 }
 
-function estimateDailyEnergy(profile) {
-const weight = profile.weight || 80;
-const ageGroup = profile.ageGroup || "40-49";
-const gender = profile.gender || "male";
-const muscleLevel = profile.muscleLevel || "normal";
-
-// Grov TDEE-model baseret primært på vægt + muskulatur
-let factor = 28; // kcal/kg/døgn baseline
-if (muscleLevel === "high") factor = 31;
-if (muscleLevel === "low") factor = 25;
-
-let tdee = weight * factor;
-
-// Køn
-if (gender === "female") tdee *= 0.9;
-if (gender === "other") tdee *= 0.95;
-
-// Alder
-const age = getNumericAge(ageGroup);
-if (age >= 50 && age < 60) tdee *= 0.95;
-else if (age >= 60 && age < 70) tdee *= 0.9;
-else if (age >= 70) tdee *= 0.85;
-
-return Math.max(1400, Math.round(tdee));
+function loadHistory() {
+try {
+const raw = localStorage.getItem(STORAGE_KEY_HISTORY);
+if (!raw) return [];
+return JSON.parse(raw);
+} catch {
+return [];
+}
 }
 
-function updateBmrDisplay() {
-const daily = estimateDailyEnergy(state.profile);
-const chip = document.getElementById("bmrChip");
-chip.textContent = `Dagligt forbrug: ca. ${daily.toLocaleString("da-DK")} kcal`;
+function saveHistory(list) {
+try {
+localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(list));
+} catch (e) {
+console.warn("Kunne ikke gemme historik:", e);
+}
 }
 
-// ----------- FASTING MODEL -----------
-function getFastingHours(nowSec) {
-if (!state.startTime) return 0;
-const start = new Date(state.startTime).getTime() / 1000;
-const elapsed = nowSec - start + (state.offsetSeconds || 0);
-return Math.max(0, elapsed / 3600);
+function applyProfileToInputs() {
+els.gender.value = state.gender;
+els.ageGroup.value = state.ageGroup;
+els.weight.value = state.weight;
+els.muscleLevel.value = state.muscleLevel;
+els.alreadyFasted.value = String(state.baseStartHours).replace(".", ",");
+els.refeedKcal.value = state.refeedKcal || 0;
+els.activityTodayKcal.value = state.activityTodayKcal || 0;
+els.addActivityKcal.value = "";
+els.totalActivityLabel.textContent =
+(state.addedActivityKcal || 0) + " kcal";
+els.bmrLabel.textContent = Math.round(state.bmr) + " kcal/døgn";
 }
 
-function formatTime(totalSeconds) {
-const s = Math.max(0, Math.floor(totalSeconds));
-const h = Math.floor(s / 3600);
-const m = Math.floor((s % 3600) / 60);
-const sec = s % 60;
-const pad = (x) => String(x).padStart(2, "0");
-return `${pad(h)}:${pad(m)}:${pad(sec)}`;
-}
-
-// Modeller andel energi fra fedt som funktion af timer
-function fatShareAtHour(h) {
-if (h <= 0) return 0.10;
-if (h <= 4) {
-// 0-4 timer: 10% -> 15%
-const t = h / 4;
-return 0.10 + t * (0.15 - 0.10);
-}
-if (h <= 12) {
-// 4-12 timer: 15% -> 50%
-const t = (h - 4) / 8;
-return 0.15 + t * (0.50 - 0.15);
-}
-if (h <= 24) {
-// 12-24 timer: 50% -> 80%
-const t = (h - 12) / 12;
-return 0.50 + t * (0.80 - 0.50);
-}
-if (h <= 36) {
-// 24-36 timer: 80% -> 90%
-const t = (h - 24) / 12;
-return 0.80 + t * (0.90 - 0.80);
-}
-// >36 timer: ca. 90% fra fedt
-return 0.90;
-}
-
-function muscleBoneShareAtHour(h) {
-let muscle = 0;
-let bone = 0;
-if (h > 24 && h <= 48) {
-muscle = ((h - 24) / 24) * 0.03; // op til 3%
-} else if (h > 48) {
-muscle = 0.03 + Math.min((h - 48) / 24, 1) * 0.02; // op til 5%
-bone = Math.min((h - 48) / 24, 1) * 0.03; // op til 3%
-}
-return { muscle, bone };
-}
-
-function energyBreakdown(h) {
-const fat = fatShareAtHour(h);
-const { muscle, bone } = muscleBoneShareAtHour(h);
-let carb = 1 - fat - muscle - bone;
-if (carb < 0) carb = 0;
-return { fat, carb, muscle, bone };
-}
-
-function averageFatShare(h) {
-if (h <= 0) return 0.10;
-const fNow = fatShareAtHour(h);
-// simpel gennemsnit mellem start og nu
-return (0.10 + fNow) / 2;
-}
-
-function estimateWeightLossGrams(h, dailyEnergyKcal) {
-if (h <= 0) return 0;
-const avgFat = averageFatShare(h);
-const totalEnergy = (dailyEnergyKcal * h) / 24; // kcal
-const fatEnergy = totalEnergy * avgFat;
-const gramsFat = fatEnergy / 7.7; // 1g fedt ≈ 7,7 kcal
-return gramsFat;
-}
-
-function getFatBoost(fatShare) {
-const baseline = 0.10; // "normal" hverdag
-if (fatShare <= 0) return 1;
-return fatShare / baseline;
-}
-
-// ----------- HISTORY -----------
-function addHistoryEntry(entry) {
-state.history.unshift(entry);
-// begræns til fx 50 entries
-if (state.history.length > 50) state.history.pop();
-saveState();
-renderHistorySummary();
-}
-
-function renderHistorySummary() {
-const summaryEl = document.getElementById("historySummary");
-const listEl = document.getElementById("historyList");
-const history = state.history || [];
-
+function renderHistory() {
+if (!els.historyContainer) return;
+const history = loadHistory();
 if (!history.length) {
-summaryEl.textContent = "Ingen gemte faster endnu.";
-listEl.innerHTML = "";
+els.historyContainer.innerHTML =
+'<span class="history-empty">Ingen gemte faster endnu.</span>';
+return;
+}
+const chips = history
+.slice()
+.reverse()
+.map((f) => {
+const date = new Date(f.savedAt);
+const dStr =
+date.getDate() +
+"-" +
+(date.getMonth() + 1) +
+"-" +
+date.getFullYear().toString().slice(-2);
+return `
+<div class="history-chip">
+<div class="history-chip-main">
+<span>${dStr}</span>
+<span>${roundGram(f.totalFatLossGram)} g tabt</span>
+</div>
+<div class="history-chip-sub">
+<span>${round1(f.durationHours)} t</span>
+<span>Effektiv: ${round1(f.effectiveHours)} t</span>
+</div>
+</div>
+`;
+})
+.join("");
+els.historyContainer.innerHTML = chips;
+}
+
+function updateUI() {
+const now = Date.now();
+let extraSeconds = 0;
+if (state.isRunning && state.startTimestamp) {
+extraSeconds = (now - state.startTimestamp) / 1000;
+}
+
+const elapsedHours = state.baseStartHours + extraSeconds / 3600;
+
+state.bmr = calcBMR(state);
+const kcalPerHour = state.bmr / 24;
+const totalActivityKcal =
+(state.activityTodayKcal || 0) + (state.addedActivityKcal || 0);
+
+const activityHoursEquiv = totalActivityKcal / kcalPerHour;
+const refeedHoursEquiv = (state.refeedKcal || 0) / kcalPerHour;
+
+const effectiveHoursRaw =
+elapsedHours + activityHoursEquiv - refeedHoursEquiv;
+const effectiveHours = Math.max(0, effectiveHoursRaw);
+
+const fuel = getFuelAndBoost(effectiveHours);
+const fatShare = fuel.fatShare;
+const carbShare = fuel.carbShare;
+const muscleShare = fuel.muscleShare;
+const boneShare = fuel.boneShare;
+
+const basalKcal = kcalPerHour * elapsedHours;
+const deficitKcal = Math.max(
+0,
+basalKcal + totalActivityKcal - (state.refeedKcal || 0)
+);
+state.totalDeficitKcal = deficitKcal;
+
+const fatKcal = deficitKcal * fatShare;
+const fatGram = fatKcal / 9;
+state.totalFatLossGram = fatGram;
+
+if (state.isRunning) {
+els.statusChip?.classList.add("chip-on");
+els.statusChip?.classList.remove("chip-off");
+if (els.statusText) els.statusText.textContent = "Faste i gang";
+} else {
+els.statusChip?.classList.remove("chip-on");
+els.statusChip?.classList.add("chip-off");
+if (els.statusText) els.statusText.textContent = "Ikke startet";
+}
+
+const totalSeconds = elapsedHours * 3600;
+els.durationLabel.textContent = formatDuration(totalSeconds);
+els.durationHoursLabel.textContent = round1(elapsedHours) + " t";
+els.totalLossLabel.textContent = roundGram(fatGram) + " g";
+els.totalLossKgLabel.textContent =
+(roundGram(fatGram) / 1000).toFixed(3) + " kg";
+els.effectiveHoursLabel.textContent = round1(effectiveHours) + " t";
+
+const fatPct = Math.round(fatShare * 100);
+const carbPct = Math.round(carbShare * 100);
+const musclePct = Math.round(muscleShare * 100);
+const bonePct = Math.round(boneShare * 100);
+
+if (els.fatBar) els.fatBar.style.width = fatPct + "%";
+if (els.carbBar) els.carbBar.style.width = carbPct + "%";
+if (els.muscleBar) els.muscleBar.style.width = musclePct + "%";
+if (els.boneBar) els.boneBar.style.width = bonePct + "%";
+
+if (els.fatPctLabel) els.fatPctLabel.textContent = fatPct + "%";
+if (els.carbPctLabel) els.carbPctLabel.textContent = carbPct + "%";
+if (els.musclePctLabel) els.musclePctLabel.textContent = musclePct + "%";
+if (els.bonePctLabel) els.bonePctLabel.textContent = bonePct + "%";
+
+const angle = fuelShareToAngle(fatShare);
+if (els.gaugeNeedle) {
+els.gaugeNeedle.style.transform =
+"translate(-50%, -100%) rotate(" + angle + "deg)";
+}
+if (els.gaugeBoostLabel) {
+els.gaugeBoostLabel.textContent = round1(fuel.boost) + "×";
+}
+if (els.gaugeFatShareLabel) {
+els.gaugeFatShareLabel.textContent = fatPct + "%";
+}
+
+let autofagyHours = 0;
+let timeToAutofagy = AUTOPHAGY_THRESHOLD_HOURS - effectiveHours;
+if (effectiveHours >= AUTOPHAGY_THRESHOLD_HOURS) {
+autofagyHours = effectiveHours - AUTOPHAGY_THRESHOLD_HOURS;
+timeToAutofagy = 0;
+}
+if (els.timeToAutofagyLabel) {
+els.timeToAutofagyLabel.textContent =
+round1(Math.max(0, timeToAutofagy)) + " t";
+}
+if (els.hoursInAutofagyLabel) {
+els.hoursInAutofagyLabel.textContent =
+round1(Math.max(0, autofagyHours)) + " t";
+}
+if (effectiveHours >= AUTOPHAGY_THRESHOLD_HOURS) {
+els.autofagyStatusChip?.classList.add("chip-on");
+els.autofagyStatusChip?.classList.remove("chip-off");
+} else {
+els.autofagyStatusChip?.classList.remove("chip-on");
+els.autofagyStatusChip?.classList.add("chip-off");
+}
+
+if (els.officialFastChip) {
+if (elapsedHours >= 12)
+els.officialFastChip.classList.add("badge-on");
+else els.officialFastChip.classList.remove("badge-on");
+}
+if (els.autofagyBadgeChip) {
+if (effectiveHours >= AUTOPHAGY_THRESHOLD_HOURS)
+els.autofagyBadgeChip.classList.add("badge-on");
+else els.autofagyBadgeChip.classList.remove("badge-on");
+}
+
+els.bmrLabel.textContent = Math.round(state.bmr) + " kcal/døgn";
+}
+
+function readProfileFromInputs() {
+state.gender = els.gender?.value || "mand";
+state.ageGroup = els.ageGroup?.value || "50-59";
+state.weight = toNumber(els.weight?.value || state.weight, state.weight);
+state.muscleLevel = els.muscleLevel?.value || "normal";
+state.baseStartHours = toNumber(els.alreadyFasted?.value, 0);
+state.refeedKcal = toNumber(els.refeedKcal?.value, 0);
+state.activityTodayKcal = toNumber(els.activityTodayKcal?.value, 0);
+}
+
+function onStart() {
+readProfileFromInputs();
+state.isRunning = true;
+state.startTimestamp = Date.now();
+saveState();
+updateUI();
+}
+
+function onStop() {
+state.isRunning = false;
+saveState();
+updateUI();
+}
+
+function onResetAll() {
+state.isRunning = false;
+state.startTimestamp = null;
+state.baseStartHours = 0;
+state.refeedKcal = 0;
+state.activityTodayKcal = 0;
+state.addedActivityKcal = 0;
+state.totalDeficitKcal = 0;
+state.totalFatLossGram = 0;
+saveState();
+applyProfileToInputs();
+updateUI();
+}
+
+function onAddActivity() {
+const add = toNumber(els.addActivityKcal?.value, 0);
+if (!add || add <= 0) return;
+state.addedActivityKcal =
+(state.addedActivityKcal || 0) + add;
+els.addActivityKcal.value = "";
+els.totalActivityLabel.textContent =
+state.addedActivityKcal + " kcal";
+saveState();
+updateUI();
+}
+
+function onSaveFast() {
+const now = Date.now();
+let extraSeconds = 0;
+if (state.isRunning && state.startTimestamp) {
+extraSeconds = (now - state.startTimestamp) / 1000;
+}
+const elapsedHours = state.baseStartHours + extraSeconds / 3600;
+const kcalPerHour = state.bmr / 24;
+const totalActivityKcal =
+(state.activityTodayKcal || 0) + (state.addedActivityKcal || 0);
+const activityHoursEquiv = totalActivityKcal / kcalPerHour;
+const refeedHoursEquiv = (state.refeedKcal || 0) / kcalPerHour;
+const effectiveHours = Math.max(
+0,
+elapsedHours + activityHoursEquiv - refeedHoursEquiv
+);
+
+if (elapsedHours < 12) {
+alert(
+"Du skal mindst have fastet i 12 timer for at kunne gemme fasten i din historik."
+);
 return;
 }
 
-let totalFat = 0;
-let totalHours = 0;
-let totalAuto = 0;
-const now = Date.now();
-
-history.forEach((h) => {
-totalFat += h.gramsFat || 0;
-totalHours += h.hours || 0;
-totalAuto += h.autophagyHours || 0;
+const history = loadHistory();
+history.push({
+savedAt: now,
+durationHours: elapsedHours,
+effectiveHours,
+totalFatLossGram: state.totalFatLossGram,
 });
-
-summaryEl.innerHTML =
-`Gemte faster: <strong>${history.length}</strong><br/>` +
-`Samlet vægttab: <strong>${totalFat.toFixed(0)} g</strong> · ` +
-`Samlet fastetid: <strong>${totalHours.toFixed(1)} timer</strong><br/>` +
-`Tid i autofagi (estimat): <strong>${totalAuto.toFixed(1)} timer</strong>`;
-
-listEl.innerHTML = "";
-history.slice(0, 12).forEach((h) => {
-const li = document.createElement("div");
-li.className = "history-item";
-
-const dt = new Date(h.endedAt || now);
-const dateStr = dt.toLocaleDateString("da-DK", {
-day: "2-digit",
-month: "2-digit",
-year: "2-digit",
-});
-
-const timeStr = dt.toLocaleTimeString("da-DK", {
-hour: "2-digit",
-minute: "2-digit",
-});
-
-li.innerHTML = `
-<div class="history-main">
-<div>${h.hours.toFixed(1)} t · ${Math.round(h.gramsFat)} g</div>
-<div style="color:var(--subtle);">Autofagi: ${h.autophagyHours.toFixed(1)} t</div>
-</div>
-<div class="history-sub">
-<div>${dateStr}</div>
-<div>${timeStr}</div>
-</div>
-`;
-listEl.appendChild(li);
-});
+saveHistory(history);
+renderHistory();
+alert("Fasten er gemt lokalt på enheden.");
 }
 
-// ----------- UI UPDATE LOOP -----------
-let tickInterval = null;
-
-function updateUI() {
-const nowSec = Date.now() / 1000;
-const hours = getFastingHours(nowSec);
-const seconds = hours * 3600;
-
-// Top metrics
-document.getElementById("elapsedTime").textContent = formatTime(seconds);
-document.getElementById("elapsedHoursLabel").textContent =
-hours.toFixed(1).replace(".", ",") + " timer";
-
-// Energy / weight
-const breakdown = energyBreakdown(hours);
-const daily = estimateDailyEnergy(state.profile);
-const gramsFat = estimateWeightLossGrams(hours, daily);
-
-document.getElementById("weightLossGrams").textContent =
-Math.round(gramsFat) + " g";
-document.getElementById("weightLossKilos").textContent =
-(gramsFat / 1000).toFixed(3).replace(".", ",") + " kg";
-
-// Gauge
-const fatBoost = getFatBoost(breakdown.fat);
-const boostText = fatBoost.toFixed(1).replace(".", ",") + "×";
-document.getElementById("fatBoost").textContent = boostText;
-
-// Gauge indicator: map boost (1–9+) til -90° til +90°
-let normalizedBoost = Math.max(1, Math.min(fatBoost, 9));
-const angle = -90 + ((normalizedBoost - 1) / 8) * 180;
-const indicator = document.getElementById("gaugeIndicator");
-indicator.style.transform = `rotate(${angle}deg)`;
-
-// Energy bars
-function setBar(idFill, idPct, value) {
-const pct = Math.round(value * 100);
-const elFill = document.getElementById(idFill);
-const elPct = document.getElementById(idPct);
-const clamped = Math.max(0, Math.min(100, pct));
-elFill.style.transform = `scaleX(${clamped / 100})`;
-elPct.textContent = clamped + "%";
+function onClearHistory() {
+if (!confirm("Vil du rydde hele faste-historikken på denne enhed?")) return;
+saveHistory([]);
+renderHistory();
 }
 
-setBar("fatFill", "fatPct", breakdown.fat);
-setBar("carbFill", "carbPct", breakdown.carb);
-setBar("muscleFill", "musclePct", breakdown.muscle);
-setBar("boneFill", "bonePct", breakdown.bone);
-
-// Autofagi
-const autoStart = 16;
-let autoHours = 0;
-let timeToAuto = 0;
-if (hours >= autoStart) {
-autoHours = hours - autoStart;
-timeToAuto = 0;
-} else {
-timeToAuto = autoStart - hours;
-}
-
-const autoCountdownEl = document.getElementById("autophagyCountdown");
-const autoActiveEl = document.getElementById("autophagyActive");
-
-if (timeToAuto > 0) {
-autoCountdownEl.textContent =
-"Tid til autofagi: " + timeToAuto.toFixed(1).replace(".", ",") + " timer";
-} else {
-autoCountdownEl.textContent = "Tid til autofagi: 0,0 timer (allerede i gang)";
-}
-
-autoActiveEl.textContent =
-"Timer i autofagi: " + Math.max(0, autoHours).toFixed(1).replace(".", ",");
-autoActiveEl.style.color = hours >= autoStart ? "#4ade80" : "var(--subtle)";
-
-// Badges
-const badgeRow = document.getElementById("badgeRow");
-badgeRow.innerHTML = "";
-let hasBadge = false;
-
-if (hours >= 12) {
-const b = document.createElement("span");
-b.className = "badge gold";
-b.innerHTML = `<span class="badge-icon">🥇</span> Faste-badge (12+ timer)`;
-badgeRow.appendChild(b);
-hasBadge = true;
-}
-if (hours >= autoStart) {
-const b2 = document.createElement("span");
-b2.className = "badge blue";
-b2.innerHTML = `<span class="badge-icon">🧬</span> Autofagi-badge (16+ timer)`;
-badgeRow.appendChild(b2);
-hasBadge = true;
-}
-if (!hasBadge) {
-const b3 = document.createElement("span");
-b3.className = "badge";
-b3.innerHTML = `<span class="badge-icon">⬜</span> Ingen badges endnu – hold fast lidt længere`;
-badgeRow.appendChild(b3);
-}
-
-// Status chip
-const statusChip = document.getElementById("statusChip");
-if (!state.startTime) {
-statusChip.textContent = "Ikke startet";
-statusChip.style.color = "var(--subtle)";
-statusChip.style.borderColor = "rgba(148, 163, 184, 0.35)";
-} else if (state.isRunning) {
-statusChip.textContent = "Faste kører";
-statusChip.style.color = "#bbf7d0";
-statusChip.style.borderColor = "rgba(34, 197, 94, 0.8)";
-} else {
-statusChip.textContent = "Sat på stop";
-statusChip.style.color = "#fde68a";
-statusChip.style.borderColor = "rgba(234, 179, 8, 0.8)";
-}
-
-// Kort advarsel, hvis under 12 timer (kun info – gem-logikken ligger i stopHandler)
-const warnEl = document.getElementById("shortFastWarning");
-if (hours > 0 && hours < 12) {
-warnEl.style.display = "block";
-warnEl.textContent = "Fasten er under 12 timer – den kan stoppes, men vil ikke blive gemt som officiel faste.";
-} else {
-warnEl.style.display = "none";
-}
-}
-
-function startTicking() {
-if (tickInterval) clearInterval(tickInterval);
-tickInterval = setInterval(() => {
-updateUI();
-saveState();
-}, 1000);
-updateUI();
-}
-
-// ----------- EVENT HANDLERS -----------
-function handleProfileChange() {
-const gender = document.getElementById("gender").value;
-const ageGroup = document.getElementById("ageGroup").value;
-const weight = parseFloat(document.getElementById("weight").value) || 80;
-const muscleLevel = document.getElementById("muscleLevel").value;
-
-state.profile = {
-gender,
-ageGroup,
-weight,
-muscleLevel,
-};
-updateBmrDisplay();
-saveState();
-updateUI();
-}
-
-function handleStart() {
-// Læs profil
-handleProfileChange();
-const already = parseFloat(document.getElementById("alreadyHours").value) || 0;
-const now = new Date();
-
-if (!state.startTime) {
-state.startTime = now.toISOString();
-state.offsetSeconds = already * 3600;
-} else if (!state.isRunning) {
-// genoptag fra tidligere startTime + offsetSeconds (vi ændrer ikke startTime, så historik bevares)
-// men vi kan opdatere offset, hvis brugeren manuelt har justeret "allerede i gang"
-state.offsetSeconds = already * 3600;
-state.startTime = now.toISOString();
-}
-
-state.isRunning = true;
-
-document.getElementById("startBtn").disabled = true;
-document.getElementById("stopBtn").disabled = false;
-
-saveState();
-startTicking();
-}
-
-function handleStop() {
-if (!state.startTime) return;
-
-const nowSec = Date.now() / 1000;
-const hours = getFastingHours(nowSec);
-
-state.isRunning = false;
-
-document.getElementById("startBtn").disabled = false;
-document.getElementById("stopBtn").disabled = true;
-
-// Gem / ikke gem logik
-let saved = false;
-if (hours >= 12) {
-const daily = estimateDailyEnergy(state.profile);
-const gramsFat = estimateWeightLossGrams(hours, daily);
-const autoHours = Math.max(0, hours - 16);
-
-const wantSave = confirm(
-`Fasten har varet ${hours.toFixed(1).replace(".", ",")} timer.\n` +
-`Estimeret vægttab: ca. ${Math.round(gramsFat)} g.\n\n` +
-`Vil du gemme denne faste i din historik?`
-);
-
-if (wantSave) {
-addHistoryEntry({
-hours,
-gramsFat,
-autophagyHours: autoHours > 0 ? autoHours : 0,
-endedAt: Date.now(),
-});
-saved = true;
-}
-} else {
-alert(
-"Fasten er under 12 timer, så den gemmes ikke i historikken.\n\n" +
-"Du kan stadig starte en ny faste, når du vil."
-);
-}
-
-saveState();
-updateUI();
-
-// Vi nulstiller IKKE state.startTime osv. – så man kan se sidste resultat,
-// men historik er kun opdateret, hvis der blev gemt.
-}
-
-// ----------- INIT -----------
 function init() {
-// Input events
-["gender", "ageGroup", "weight", "muscleLevel"].forEach((id) => {
-document.getElementById(id).addEventListener("change", handleProfileChange);
-});
-document.getElementById("alreadyHours").addEventListener("change", () => {
-// bare gem i state, så brugeren ikke mister tallet
-const v = parseFloat(document.getElementById("alreadyHours").value) || 0;
-state.offsetSeconds = v * 3600;
-saveState();
-});
-
-document.getElementById("startBtn").addEventListener("click", handleStart);
-document.getElementById("stopBtn").addEventListener("click", handleStop);
-
 loadState();
-updateBmrDisplay();
+state.bmr = calcBMR(state);
+applyProfileToInputs();
+renderHistory();
+updateUI();
 
-// Hvis der var en aktiv faste, genoptag ticking
-if (state.startTime && state.isRunning) {
-document.getElementById("startBtn").disabled = true;
-document.getElementById("stopBtn").disabled = false;
-startTicking();
-} else if (state.startTime) {
-// vis sidste kendte status
+els.startBtn?.addEventListener("click", onStart);
+els.stopBtn?.addEventListener("click", onStop);
+els.resetBtn?.addEventListener("click", onResetAll);
+els.addActivityBtn?.addEventListener("click", onAddActivity);
+els.saveFastBtn?.addEventListener("click", onSaveFast);
+els.clearHistoryBtn?.addEventListener("click", onClearHistory);
+
+[
+els.gender,
+els.ageGroup,
+els.weight,
+els.muscleLevel,
+els.alreadyFasted,
+els.refeedKcal,
+els.activityTodayKcal,
+].forEach((input) => {
+input?.addEventListener("change", () => {
+readProfileFromInputs();
+state.bmr = calcBMR(state);
+saveState();
 updateUI();
-} else {
+});
+});
+
+setInterval(() => {
+if (!state.isRunning) return;
 updateUI();
-}
+}, 1000);
 }
 
 document.addEventListener("DOMContentLoaded", init);
